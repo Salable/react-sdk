@@ -1,0 +1,41 @@
+name: Check Core Version
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    types: [opened, synchronize]
+
+jobs:
+  checkCoreVersion:
+    name: Check Core Version
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          token: ${{ secrets.GH_TOKEN }}
+          fetch-depth: 0
+
+      - name: Get latest release
+        uses: rez0n/actions-github-release@main
+        id: version
+        env:
+          token: ${{ secrets.GH_TOKEN }}
+          repository: "Salable/js-sdk"
+          type: "latest"
+
+      - name: Format latest version
+        id: latest
+        run: "version='${{ steps.version.outputs.release }}' && echo ::set-output name=version::${version/'v'/''} && mkdir params && echo ${version/'v'/''} > params/VERSION"
+
+      - name: Read currentVersion from ./packages/constants.ts file
+        id: currentVersion
+        run: echo "::set-output name=version::$(head -1 ./packages/constants.ts | awk '{ print $5; }' | sed "s/'//g" | sed 's/.$//')"
+
+      - name: Compare versions
+        if: steps.latest.outputs.version != steps.currentVersion.outputs.version
+        run: |
+          echo "Latest core version (${{steps.latest.outputs.version}}) is not being used. Version ${{steps.currentVersion.outputs.version}} is currently being used. Please update to latest."
+          exit 1
+
+      - run: echo "Latest core version (${{steps.latest.outputs.version}}) is being used."

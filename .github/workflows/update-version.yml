@@ -1,0 +1,45 @@
+name: Update Version
+
+# Run this action every hour on the hour.
+on:
+  schedule:
+    - cron: "0 * * * *"
+  workflow_dispatch:
+
+jobs:
+  update-version:
+    name: Update Version
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          token: ${{ secrets.GH_TOKEN }}
+          fetch-depth: 0
+
+      - name: Get latest release
+        uses: rez0n/actions-github-release@main
+        id: version
+        env:
+          token: ${{ secrets.GH_TOKEN }}
+          repository: "Salable/js-sdk"
+          type: "latest"
+
+      - name: Format latest version
+        id: latest
+        run: "version='${{ steps.version.outputs.release }}' && echo ::set-output name=version::${version/'v'/''} && mkdir params && echo ${version/'v'/''} > params/VERSION"
+
+      - name: Read currentVersion from ./packages/constants.ts file
+        id: currentVersion
+        run: echo "::set-output name=version::$(head -1 ./packages/constants.ts | awk '{ print $5; }' | sed "s/'//g" | sed 's/.$//')"
+
+      - name: Compare versions
+        if: steps.latest.outputs.version > steps.currentVersion.outputs.version
+        run: echo "$(sed -i -e 's/${{steps.currentVersion.outputs.version}}/${{steps.latest.outputs.version}}/g' ./packages/constants.ts)"
+
+      - name: Push changes
+        if: steps.latest.outputs.version > steps.currentVersion.outputs.version
+        run: |
+          git config --global user.name 'github-actions'
+          git config --global user.email 'github-actions@github.com'
+          git commit -am "feat: bumped core library version to ${{steps.latest.outputs.version}}"
+          git push
