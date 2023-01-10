@@ -46,10 +46,19 @@ export interface IPricingTableReact {
   };
 }
 
+export type IPricingTable = {
+  init: () => Promise<void>;
+  removeScripts: () => void;
+  destroy: () => void;
+} | null;
+
 declare global {
   interface Window {
-    Salable: {
-      init: () => void;
+    PricingTable: {
+      new (
+        envConfig: IPricingTableReact['envConfig'],
+        checkoutConfig: IPricingTableReact['checkoutConfig']
+      ): IPricingTable;
     };
   }
 }

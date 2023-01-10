@@ -1,12 +1,12 @@
 import { FC, useEffect } from 'react';
-import { IPricingTableReact } from './types';
+import { IPricingTable, IPricingTableReact } from './types';
 import { JS_SDK_VERSION } from '../../../../constants';
 
 export const SalablePricingTableReact: FC<IPricingTableReact> = ({
   envConfig,
   checkoutConfig,
 }) => {
-  let salable: any = null;
+  let pricingTable: IPricingTable = null;
 
   useEffect(() => {
     if (!document.getElementById('salableCdnScript')) {
@@ -27,22 +27,24 @@ export const SalablePricingTableReact: FC<IPricingTableReact> = ({
       );
 
       script.addEventListener('load', () => {
-        if (window.Salable) {
+        if (window.PricingTable) {
           (async () => {
-            salable = new window.Salable(envConfig, checkoutConfig);
-            await salable.init();
-          })();
+            pricingTable = new window.PricingTable(envConfig, checkoutConfig);
+            await pricingTable?.init();
+          })().catch((error) => {
+            // eslint-disable-next-line no-console
+            console.error(error);
+          });
         }
       });
     }
+
     return () => {
-      salable?.removeScripts();
+      pricingTable?.removeScripts();
       document.querySelector('.salable-pricing-table-container')?.remove();
       document.getElementById('salableCdnScript')?.remove();
     };
   }, [envConfig, checkoutConfig]);
-
-  console.log(salable);
 
   return <div className="salable-pricing-table-react" />;
 };

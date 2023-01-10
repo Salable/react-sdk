@@ -2,6 +2,7 @@
 
 ## Packages Included
 
+- [@salable/pricing-table-react](https://github.com/Salable/react-sdk/tree/main/packages/pricing-table)
 
 ## Development
 
