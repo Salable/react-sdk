@@ -1,0 +1,50 @@
+.addressFormFieldsBox {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-column-gap: 2rem;
+}
+
+.skeleton__input_wrapper {
+  margin-bottom: 1.9rem;
+}
+.skeleton__cursor_loading {
+  cursor: progress;
+}
+.skeleton__cursor_error {
+  cursor: not-allowed;
+}
+
+.skeleton__label {
+  height: 18px;
+  max-width: 200px;
+  background-color: #f3f3f3;
+  margin-bottom: 0.1rem;
+}
+
+.skeleton__input {
+  height: 35px;
+  max-width: 100%;
+  background-color: #f3f3f3;
+  border-radius: 4px;
+}
+
+.skeleton__discernable_text {
+  opacity: 0;
+}
+
+.errorBox {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  backdrop-filter: blur(2px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.errorBox__container {
+  background-color: rgb(255, 163, 163);
+  border-radius: 4px;
+  padding: 5px 15px;
+}

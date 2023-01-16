@@ -1,0 +1,75 @@
+.modal__mask {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 3000;
+  height: 100%;
+  opacity: 0.9;
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+.modal__container {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  overflow: auto;
+  outline: 0;
+  z-index: 3000;
+  display: flex;
+  align-items: center;
+}
+
+.modal__content {
+  position: relative;
+  z-index: 3500;
+  background-color: white;
+  border-radius: 4px;
+  box-shadow: 0px 10px 24px rgb(0 0 0 / 10%);
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+  margin: 0 auto;
+  width: 600px;
+  /* md screen <= 768px */
+}
+@media (max-width: 768px) {
+  .modal__content {
+    width: 100%;
+    max-height: 100vh;
+    border-radius: 0;
+    border: none;
+  }
+}
+
+/* switch (props.size) {
+    case 'large':
+      modalContentStyle = {
+        ...modalContentStyle,
+        width: convertPxToRem('1000px'),
+      };
+      break;
+    case 'regular':
+      modalContentStyle = {
+        ...modalContentStyle,
+        width: convertPxToRem('800px'),
+      };
+      break;
+    case 'medium':
+      modalContentStyle = {
+        ...modalContentStyle,
+        width: convertPxToRem('600px'),
+      };
+      break;
+    case 'small':
+    default:
+      modalContentStyle = {
+        ...modalContentStyle,
+        width: convertPxToRem('400px'),
+      };
+      break;
+  } */
