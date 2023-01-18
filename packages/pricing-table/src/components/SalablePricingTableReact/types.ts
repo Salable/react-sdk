@@ -54,7 +54,7 @@ export type IPricingTable = {
 
 declare global {
   interface Window {
-    PricingTable: {
+    SalablePricingTable: {
       new (
         envConfig: IPricingTableReact['envConfig'],
         checkoutConfig: IPricingTableReact['checkoutConfig']
