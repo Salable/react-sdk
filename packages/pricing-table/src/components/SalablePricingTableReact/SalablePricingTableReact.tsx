@@ -27,9 +27,12 @@ export const SalablePricingTableReact: FC<IPricingTableReact> = ({
       );
 
       script.addEventListener('load', () => {
-        if (window.PricingTable) {
+        if (window.SalablePricingTable) {
           (async () => {
-            pricingTable = new window.PricingTable(envConfig, checkoutConfig);
+            pricingTable = new window.SalablePricingTable(
+              envConfig,
+              checkoutConfig
+            );
             await pricingTable?.init();
           })().catch((error) => {
             // eslint-disable-next-line no-console
