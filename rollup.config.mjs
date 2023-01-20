@@ -14,11 +14,16 @@ const config = {
   output: [
     {
       file: packageJson.main,
+      format: 'cjs',
+      sourcemap: true,
+    },
+    {
+      file: packageJson.module,
       format: 'esm',
-      sourcemap: true
+      sourcemap: true,
     },
   ],
-  external: ['react/jsx-runtime', 'react'],
+  external: ['react', 'react-dom'],
   plugins: [
     json(),
     peerDepsExternal(),
@@ -29,7 +34,9 @@ const config = {
       moduleDirectories: ['packages'],
     }),
     commonjs(),
-    typescript(),
+    typescript({
+      tsconfig: 'tsconfig.json',
+    })
   ],
 };
 
