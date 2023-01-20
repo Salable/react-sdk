@@ -1,3 +1,10 @@
+## [1.1.3](https://github.com/Salable/react-sdk/compare/v1.1.2...v1.1.3) (2023-01-20)
+
+
+### Bug Fixes
+
+* changed rollup config ([afd54e4](https://github.com/Salable/react-sdk/commit/afd54e4bcc07c5b4f559098c107180941cec701f))
+
 ## [1.1.2](https://github.com/Salable/react-sdk/compare/v1.1.1...v1.1.2) (2023-01-20)
 
 
