@@ -1,3 +1,10 @@
+## [1.1.2](https://github.com/Salable/react-sdk/compare/v1.1.1...v1.1.2) (2023-01-20)
+
+
+### Bug Fixes
+
+* changed @types/react version ([050db89](https://github.com/Salable/react-sdk/commit/050db894e1ca27140748a50a5e7d36a5efe44f73))
+
 ## [1.1.1](https://github.com/Salable/react-sdk/compare/v1.1.0...v1.1.1) (2023-01-20)
 
 
