@@ -1,3 +1,11 @@
+## [1.1.1](https://github.com/Salable/react-sdk/compare/v1.1.0...v1.1.1) (2023-01-20)
+
+
+### Bug Fixes
+
+* package-lock.json updated ([6f123bf](https://github.com/Salable/react-sdk/commit/6f123bf37853e94cd6b398110c28a973294e2e63))
+* peerDependencies react changed to 17.0.2 in pricing table ([d27d4a7](https://github.com/Salable/react-sdk/commit/d27d4a7633bded124f55f11fbfffc94928837cb0))
+
 # [1.1.0](https://github.com/Salable/react-sdk/compare/v1.0.0...v1.1.0) (2023-01-18)
 
 
