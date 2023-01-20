@@ -15,7 +15,7 @@ const config = {
     {
       file: packageJson.main,
       format: 'esm',
-      sourcemap: true,
+      sourcemap: true
     },
   ],
   external: ['react/jsx-runtime', 'react'],
