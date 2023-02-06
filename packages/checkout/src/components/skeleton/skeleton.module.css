@@ -3,6 +3,7 @@
   display: grid;
   grid-template-columns: 1fr;
   grid-column-gap: 2rem;
+  width: 100%;
 }
 
 .skeleton__input_wrapper {
@@ -47,4 +48,26 @@
   background-color: rgb(255, 163, 163);
   border-radius: 4px;
   padding: 5px 15px;
+}
+
+.integrationWrapper {
+  position: relative;
+}
+
+.previewWrapper {
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-select: none; /* Safari */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* Internet Explorer/Edge */
+  outline: none;
+}
+
+.stripeWrapper {
+  min-width: 500px;
+}
+
+.paddleWrapper {
+  width: 375px;
+  max-width: 375px;
 }

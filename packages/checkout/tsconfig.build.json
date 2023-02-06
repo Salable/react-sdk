@@ -1,0 +1,15 @@
+{
+  "extends": "./tsconfig.json",
+  "exclude": [
+    "node_modules",
+    "dist",
+    "example",
+    "typings.d.ts",
+    "react-app-env.d.ts",
+    "src/*/*.stories.*",
+    "src/*/*/*.stories.*",
+    "src/jest.config.js",
+    "src/jest.setup.ts",
+    "src/*/__tests__"
+  ]
+}

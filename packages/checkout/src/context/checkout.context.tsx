@@ -3,14 +3,18 @@
  */
 
 import { createContext, useContext } from 'react';
-import { IRenderType } from './checkout.interface';
+import { IRenderType } from '../interfaces/context.interface';
+import { FrameError } from '../util/message-error';
 import { initialCheckoutValues, ICheckoutState } from './checkout.reducer';
 
 const stub = (): never => {
-  throw new Error('You forgot to wrap your component in <CheckoutProvider>.');
+  throw new FrameError(
+    'You forgot to wrap your component in <CheckoutProvider>.',
+    'developer'
+  );
 };
 export interface ICheckoutContext {
-  apiKey: string;
+  preview: boolean;
   state: ICheckoutState;
   renderType: IRenderType;
   /**
@@ -24,7 +28,7 @@ export interface ICheckoutContext {
 }
 
 const initialContext: ICheckoutContext = {
-  apiKey: '',
+  preview: false,
   state: initialCheckoutValues,
   renderType: 'embedded',
   openCheckoutModal: stub,

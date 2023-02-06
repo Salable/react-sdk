@@ -1,65 +1,86 @@
-import React, { FC, useCallback, useMemo, useReducer } from 'react';
-import CheckoutContext, { ICheckoutContext } from './checkout.context';
+import { FC, useCallback, useMemo, useReducer } from 'react';
 import { ICheckoutProviderOptions } from './checkout.interface';
-import { RenderIntegration } from '../components/providers/render-integration';
 import { initialCheckoutValues, reducer } from './checkout.reducer';
 import { ErrorBoundary } from '../components/error-boundary';
+import { IntegrationProvider } from '../components/integration-provider';
+import CheckoutContext, { ICheckoutContext } from './checkout.context';
+import { checkRequiredProps } from './check-required-props';
+import { FrameError } from '../util/message-error';
 import { SALABLE_API } from '../constants/constants';
-import { IProduct } from '../interfaces/product.interface';
 
 const CheckoutProviderComponent: FC<ICheckoutProviderOptions> = ({
-  apiKey,
+  integrationType,
+  paddleVendorID,
   children,
+  plan,
   renderType,
-  productId,
+  stripePublishableKey,
+  styles,
+  APIKey,
+  cancelURL,
+  granteeID,
+  memberID,
+  paddle,
+  planID,
+  successURL,
+  preview = false,
 }) => {
-  const [state, dispatch] = useReducer(reducer, initialCheckoutValues);
+  checkRequiredProps({
+    production: {
+      APIKey,
+      cancelURL,
+      granteeID,
+      memberID,
+      paddle,
+      planID,
+      successURL,
+    },
+    demo: {
+      integrationType,
+      paddleVendorID,
+      plan,
+      stripePublishableKey,
+      styles,
+    },
+    preview,
+  });
 
-  // const fetchProduct = ;
+  const [state, dispatch] = useReducer(reducer, {
+    ...initialCheckoutValues,
+  });
 
-  // 1. Fetch product details
   useMemo(() => {
-    if (!apiKey || !productId) {
-      dispatch({
-        type: 'INITIALIZATION_FAILED',
-        payload: { message: 'Missing Product ID or Credentials' },
-      });
-      return;
-    }
-    void (async () => {
-      dispatch({ type: 'GET_PRODUCT' });
-      try {
-        const res = await fetch(
-          `${SALABLE_API}/products/${productId}?expand=[organisationPaymentIntegration]`,
-          {
-            method: 'GET',
-            headers: {
-              'Content-Type': 'application/json',
-              'x-api-key': apiKey,
-            },
-          }
-        );
-        const product = (await res.json()) as IProduct;
-        if (!product?.organisationPaymentIntegration?.integrationName) {
-          dispatch({
-            type: 'INITIALIZATION_FAILED',
-            payload: {
-              message: "There's no payment provider for this product",
-            },
-          });
-          return;
-        }
-        dispatch({ type: 'GET_PRODUCT_SUCCESSFUL', payload: { product } });
-      } catch (error) {
-        dispatch({
-          type: 'GET_PRODUCT_FAILED',
-          payload: {
-            message: 'There was a problem getting product. Please try again.',
-          },
-        });
-      }
-    })();
-  }, [productId, apiKey]);
+    if (!preview) return;
+    dispatch({
+      type: 'INITIALIZE_PREVIEW',
+      payload: {
+        paddle: {
+          environment: 'sandbox',
+          vendorID: paddleVendorID,
+        },
+        stripe: {
+          publishableKey: stripePublishableKey || '',
+        },
+        integration_type: integrationType || '',
+        plan: plan || null,
+        styles: styles || null,
+      },
+    });
+  }, [
+    paddleVendorID,
+    stripePublishableKey,
+    integrationType,
+    plan,
+    styles,
+    preview,
+  ]);
+
+  if (!SALABLE_API) throw new FrameError('Missing API Domain', 'developer');
+
+  /**
+   * TODO: Fetch plan with details, payment integration
+   * using PlanID and APIKey
+   */
 
   /**
    * Method will only work when `renderType` is of type `modal`
@@ -80,7 +101,7 @@ const CheckoutProviderComponent: FC<ICheckoutProviderOptions> = ({
   }, []);
 
   const values: ICheckoutContext = {
-    apiKey: apiKey,
+    preview: preview,
     state,
     openCheckoutModal,
     closeCheckoutModal,
@@ -92,7 +113,7 @@ const CheckoutProviderComponent: FC<ICheckoutProviderOptions> = ({
    */
   return (
     <CheckoutContext.Provider value={values}>
-      <RenderIntegration>{children}</RenderIntegration>
+      <IntegrationProvider>{children}</IntegrationProvider>
     </CheckoutContext.Provider>
   );
 };

@@ -1,85 +1,124 @@
-import React, { useMemo } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
+  PaymentElement,
+  LinkAuthenticationElement,
   useStripe,
   useElements,
-  CardNumberElement,
-  CardCvcElement,
-  CardExpiryElement,
 } from '@stripe/react-stripe-js';
+import { StripePaymentElementOptions } from '@stripe/stripe-js';
 
-import useResponsiveFontSize from './use-responsive-font-size';
+import './checkout-form.css';
+import { useInHouseCheckout } from '../../context/use-checkout';
 
-const useOptions = () => {
-  const fontSize = useResponsiveFontSize();
-  const options = useMemo(
-    () => ({
-      style: {
-        base: {
-          fontSize,
-          color: '#424770',
-          letterSpacing: '0.025em',
-          fontFamily: 'Source Code Pro, monospace',
-          '::placeholder': {
-            color: '#aab7c4',
-          },
-        },
-        invalid: {
-          color: '#9e2146',
-        },
-      },
-    }),
-    [fontSize]
-  );
-
-  return options;
-};
-
-const SplitForm = () => {
+const CheckoutForm = () => {
   const stripe = useStripe();
   const elements = useElements();
-  const options = useOptions();
+  const {
+    state: { preview },
+  } = useInHouseCheckout();
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
+  const [email, setEmail] = useState('');
+  const [message, setMessage] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    if (!stripe) {
+      return;
+    }
+
+    const clientSecret = new URLSearchParams(window.location.search).get(
+      'payment_intent_client_secret'
+    );
+
+    if (!clientSecret) {
+      return;
+    }
+
+    stripe
+      .retrievePaymentIntent(clientSecret)
+      .then(({ paymentIntent }) => {
+        switch (paymentIntent?.status) {
+          case 'succeeded':
+            setMessage('Payment succeeded!');
+            break;
+          case 'processing':
+            setMessage('Your payment is processing.');
+            break;
+          case 'requires_payment_method':
+            setMessage('Your payment was not successful, please try again.');
+            break;
+          default:
+            setMessage('Something went wrong.');
+            break;
+        }
+      })
+      .catch(() => {
+        setMessage('Something went wrong.');
+      });
+  }, [stripe]);
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (preview) return;
     void (async () => {
       if (!stripe || !elements) {
-        // Stripe.js has not loaded yet. Make sure to disable
-        // form submission until Stripe.js has loaded.
-        return;
-      }
-      const card = elements.getElement(CardNumberElement);
-      if (!card) {
+        // Stripe.js has not yet loaded.
+        // Make sure to disable form submission until Stripe.js has loaded.
         return;
       }
 
-      // TODO: Get payload from method and send to and endpoint
-      await stripe.createPaymentMethod({
-        card,
-        type: 'card',
+      setIsLoading(true);
+
+      const { error } = await stripe.confirmPayment({
+        elements,
+        confirmParams: {
+          payment_method_data: {
+            billing_details: {
+              email,
+            },
+          },
+          // Make sure to change this to your payment completion page
+          return_url: 'http://localhost:6006',
+        },
       });
-      return;
+
+      // This point will only be reached if there is an immediate error when
+      // confirming the payment. Otherwise, your customer will be redirected to
+      // your `return_url`. For some payment methods like iDEAL, your customer will
+      // be redirected to an intermediate site first to authorize the payment, then
+      // redirected to the `return_url`.
+      if (error.type === 'card_error' || error.type === 'validation_error') {
+        setMessage(error?.message || null);
+      } else {
+        setMessage('An unexpected error occurred.');
+      }
+
+      setIsLoading(false);
     })();
   };
 
+  const paymentElementOptions: StripePaymentElementOptions = {
+    layout: 'tabs',
+  };
+
   return (
-    <form onSubmit={handleSubmit}>
-      <label>
-        Card number
-        <CardNumberElement options={options} />
-      </label>
-      <label>
-        Expiration date
-        <CardExpiryElement options={options} />
-      </label>
-      <label>
-        CVC
-        <CardCvcElement options={options} />
-      </label>
-      <button type="submit" disabled={!stripe}>
-        Pay
+    <form id="payment-form" onSubmit={handleSubmit}>
+      <LinkAuthenticationElement
+        id="link-authentication-element"
+        onChange={(e) => {
+          setEmail(e.value.email);
+        }}
+      />
+      <PaymentElement id="payment-element" options={paymentElementOptions} />
+      <button disabled={isLoading || !stripe || !elements} id="submit">
+        <span id="button-text">
+          {isLoading ? <div className="spinner" id="spinner" /> : 'Pay now'}
+        </span>
       </button>
+      {/* Show any error or success messages */}
+      {message && <div id="payment-message">{message}</div>}
     </form>
   );
 };
 
-export default SplitForm;
+export default CheckoutForm;

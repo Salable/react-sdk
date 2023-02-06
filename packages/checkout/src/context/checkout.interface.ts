@@ -1,136 +1,54 @@
 import React from 'react';
+import { IRenderType } from '../interfaces/context.interface';
+import { IPaddleEventCallback } from '../interfaces/paddle.interface';
+import { IPlan } from '../interfaces/product.interface';
 
-export interface IPaddleEventCallback {
-  /**
-   * Checkout has been initialized on the page
-   */
-  onLoaded?: () => void;
-  /**
-   * Checkout has been closed on the page.
-   * This is equivalent to when the "closeCallback" checkout parameter is fired [here](https://developer.paddle.com/guides/b299bce2a2f40-post-checkout#checkout-success--close-callbacks).
-   */
-  onClose?: () => void;
-  /**
-   * Checkout has been completed successfully.
-   * This is equivalent to when the "successCallback" checkout parameter is fired [here](https://developer.paddle.com/guides/b299bce2a2f40-post-checkout#checkout-success--close-callbacks).
-   */
-  onComplete?: () => void;
-  /**
-   * User has opted into/out of marketing emails in the checkout
-   */
-  onUserSubscribed?: () => void;
-  /**
-   * User has changed the quantity in the checkout
-   */
-  onQuantityChange?: () => void;
-  /**
-   * User has proceeded past the email checkout step
-   */
-  onLogin?: () => void;
-  /**
-   * User selected 'Not you? Change' in bottom right of checkout
-   */
-  onLogout?: () => void;
-  /**
-   * Payment method has been selected
-   */
-  onPaymentMethodSelected?: () => void;
-  /**
-   * User clicked 'Add Coupon'
-   */
-  onCouponAdd?: () => void;
-  /**
-   * User has submitted a coupon
-   */
-  onCouponSubmit?: () => void;
-  /**
-   * User has cancelled the coupon page
-   */
-  onCouponCancel?: () => void;
-  /**
-   * Valid coupon applied to purchase
-   */
-  onCouponApplied?: () => void;
-  /**
-   * Coupon has been removed
-   */
-  onCouponRemoved?: () => void;
-  /**
-   * Any generic checkout error, like an invalid VAT number or payment failure
-   */
-  onError?: () => void;
-  /**
-   * User proceeded past the location page
-   */
-  onLocationSubmit?: () => void;
-  /**
-   * Language has been changed in the bottom right
-   */
-  onLanguageChange?: () => void;
-  /**
-   * User clicked 'Add VAT Number'
-   */
-  onVatAdd?: () => void;
-  /**
-   * VAT screen cancelled
-   */
-  onVatCancel?: () => void;
-  /**
-   * VAT number was submitted
-   */
-  onVatSubmit?: () => void;
-  /**
-   * VAT number was accepted and applied
-   */
-  onVatApplied?: () => void;
-  /**
-   * VAT number was removed
-   */
-  onVatRemove?: () => void;
-  /**
-   * User completed a checkout with Wire Transfer as the selected payment type.
-   * Always fired with `onOfflinePaymentDetailsComplete`.
-   */
-  onWireTransferComplete?: () => void;
-  /**
-   * User has completed a checkout and selected an
-   * offline payment type (in this scenario, any details that the user needs to make their payment offline, are displayed).
-   */
-  onOfflinePaymentDetailsComplete?: () => void;
-  /**
-   * Payment has been completed successfully.
-   *
-   * Check if the payment has been [flagged for manual fraud review](https://www.paddle.com/help/manage/risk-prevention/what-are-'flagged-orders'?_gl=1*3llvve*_ga*MTAxODc2NzEuMTY2NjExMTI0Ng..*_ga_9XVE7HZLLZ*MTY2NzkyNDE3OS42LjEuMTY2NzkyNTAxNy4wLjAuMA..)
-   * in the eventData.flagged property, which returns a boolean value of `true` or `false`
-   */
-  onPaymentComplete?: () => void;
-  /**
-   * User has selected "Change Payment Method" when on the payment screen
-   */
-  onPaymentMethodChange?: () => void;
-  /**
-   * User has selected "Change Payment Method" when on the Wire Transfer screen
-   */
-  onWireTransferPaymentMethodChange?: () => void;
+export interface IRequiredTestProps {
+  plan?: IPlan | null;
+  styles?: {
+    [x: string]: string;
+  } | null;
+  integrationType?: 'paddle' | 'stripe';
+  stripePublishableKey?: string;
+  paddleVendorID?: number;
 }
-export type IRenderType = 'embedded' | 'modal';
 
-export interface ICheckoutProviderOptions {
-  apiKey: string;
+export interface IRequiredProps {
+  APIKey?: string;
   /**
-   * You don't have to provide the integration type
-   * since it's determined by the type of integration attached
-   * to a product
+   * A valid plan ID is required
    */
-  integrationType?: string;
+  planID?: string;
+  /**
+   * A return URL when payment is completed
+   */
+  successURL?: string;
+  /**
+   * A return URL when payment is canceled by user
+   */
+  cancelURL?: string;
+  /**
+   * What will be licensed
+   */
+  granteeID?: string;
+  /**
+   * Who it will be licensed to
+   */
+  memberID?: string;
+
+  paddle?: IPaddleEventCallback;
+}
+
+export interface ICheckoutProviderOptions
+  extends IRequiredProps,
+    IRequiredTestProps {
+  /**
+   * For development purpose. Default is `false`
+   */
+  preview?: boolean;
   /**
    * Default is `embedded`
    */
   renderType?: IRenderType;
-  /**
-   * A valid product ID is required
-   */
-  productId: string;
-  paddle?: IPaddleEventCallback;
   children?: React.ReactNode;
 }

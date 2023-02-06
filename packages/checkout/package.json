@@ -6,8 +6,8 @@
   "author": "Salable",
   "license": "MIT",
   "main": "dist/index.js",
-  "module": "dist/index.es.js",
-  "types": "dist/index.d.ts",
+  "module": "dist/index.modern.js",
+  "source": "src/index.tsx",
   "files": [
     "dist"
   ],
@@ -15,9 +15,10 @@
     "access": "public"
   },
   "scripts": {
-    "build": "microbundle-crl --no-compress --format modern,cjs",
+    "build": "microbundle-crl --no-compress --format modern,cjs --tsconfig tsconfig.build.json --compress",
     "start": "microbundle-crl watch --no-compress --format modern,cjs",
     "prepare": "run-s build",
+    "test:package": "jest",
     "test": "run-s test:unit test:lint test:build",
     "test:build": "run-s build",
     "test:lint": "eslint .",
@@ -43,20 +44,20 @@
     "@storybook/manager-webpack4": "^6.5.15",
     "@storybook/react": "^6.5.15",
     "@storybook/testing-library": "^0.0.13",
+    "@types/react-dom": "^18.0.10",
     "babel-loader": "^8.3.0",
-    "cross-env": "^7.0.2",
+    "classnames": "^2.3.2",
     "gh-pages": "^2.2.0",
     "microbundle-crl": "^0.13.10",
     "npm-run-all": "^4.1.5",
     "prettier": "^2.0.4",
     "storybook": "^6.5.15",
     "storybook-css-modules": "^1.0.8",
-    "typescript": "^3.7.5"
+    "typescript": "^3.7.5",
+    "yalc": "^1.0.0-pre.53"
   },
   "dependencies": {
     "@stripe/react-stripe-js": "^1.16.2",
-    "@stripe/stripe-js": "^1.46.0",
-    "classnames": "^2.3.2",
-    "dotenv": "^16.0.3"
+    "@stripe/stripe-js": "^1.46.0"
   }
 }

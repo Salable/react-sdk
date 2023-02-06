@@ -4,6 +4,7 @@ import {
   ICheckoutContext,
   IPaddleUserData,
 } from '../../interfaces/paddle.interface';
+import { FrameError } from '../../util/message-error';
 
 const CheckoutContext = React.createContext<ICheckoutContext>({});
 
@@ -14,19 +15,20 @@ const PaddleCheckoutProvider: FC<ICheckoutContext> = ({
   children,
   productId,
 }) => {
-  if (!environmentConfig) throw new Error('Must provide environmentConfig');
+  if (!environmentConfig)
+    throw new FrameError('Must provide environmentConfig', 'developer');
   const [selectedProductId, setSelectedProductId] = useState<string | null>(
     productId || null
   );
   const [userData, setUserData] = useState<IPaddleUserData>({ sub: null });
   const [passthrough, setPassthrough] = useState({});
 
-  const { paddle } = usePaddle({ environment: environmentConfig.environment });
+  const { paddle } = usePaddle(environmentConfig);
 
   useEffect(() => {
     if (!paddle || !selectedProductId) return;
     const { sub, ...user } = userData;
-    const checkoutParams: { [x: string]: string } = {
+    const checkoutParams: { [x: string]: string | undefined } = {
       method: 'inline',
       product: selectedProductId,
       passthrough: JSON.stringify({ sub, ...passthrough }),
