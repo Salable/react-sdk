@@ -1,4 +1,4 @@
-import { FC, useCallback, useMemo, useReducer } from 'react';
+import React, { FC, useCallback, useMemo, useReducer } from 'react';
 import { ICheckoutProviderOptions } from './checkout.interface';
 import { initialCheckoutValues, reducer } from './checkout.reducer';
 import { ErrorBoundary } from '../components/error-boundary';
@@ -7,6 +7,7 @@ import CheckoutContext, { ICheckoutContext } from './checkout.context';
 import { checkRequiredProps } from './check-required-props';
 import { FrameError } from '../util/message-error';
 import { SALABLE_API } from '../constants/constants';
+import { IPlan } from '../interfaces/plan.interface';
 
 const CheckoutProviderComponent: FC<ICheckoutProviderOptions> = ({
   integrationType,
@@ -75,12 +76,27 @@ const CheckoutProviderComponent: FC<ICheckoutProviderOptions> = ({
     preview,
   ]);
 
-  if (!SALABLE_API) throw new FrameError('Missing API Domain', 'developer');
-
   /**
-   * TODO: Fetch plan with details, payment integration
+   * Fetch plan with details, payment integration
    * using PlanID and APIKey
    */
+  useMemo(() => {
+    if (preview) return;
+    if (!SALABLE_API) throw new FrameError('Missing API Domain', 'developer');
+    if (!planID) throw new FrameError('Missing Plan ID', 'developer');
+    if (!APIKey) throw new FrameError('Missing API Key', 'developer');
+    void (async () => {
+      const response = await fetch(
+        `${SALABLE_API}/plans/${planID}?expand=[product.organisationPaymentIntegration,features.feature,features.enumValue, currencies.currency]`,
+        {
+          method: 'GET',
+          headers: { 'Content-Type': 'application/json', 'x-api-key': APIKey },
+        }
+      );
+      const data = (await response.json()) as IPlan;
+      dispatch({ type: 'GET_PLAN_SUCCESSFUL', payload: { plan: data } });
+    })();
+  }, []);
 
   /**
    * Method will only work when `renderType` is of type `modal`

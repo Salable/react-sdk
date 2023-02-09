@@ -1,14 +1,17 @@
 import React from 'react';
 import { IRenderType } from '../interfaces/context.interface';
 import { IPaddleEventCallback } from '../interfaces/paddle.interface';
-import { IPlan } from '../interfaces/product.interface';
+import { IPlan } from '../interfaces/plan.interface';
 
+export type IIntegrationType = 'paddle' | 'stripe';
+
+export interface ICheckoutStyle {
+  [x: string]: string;
+}
 export interface IRequiredTestProps {
   plan?: IPlan | null;
-  styles?: {
-    [x: string]: string;
-  } | null;
-  integrationType?: 'paddle' | 'stripe';
+  styles?: ICheckoutStyle | null;
+  integrationType?: IIntegrationType;
   stripePublishableKey?: string;
   paddleVendorID?: number;
 }

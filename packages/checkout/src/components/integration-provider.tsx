@@ -19,6 +19,7 @@ const SelectIntegration: FC<IIntegrationProvider> = ({ children }) => {
     state: { integration_type, paddle, stripe, plan },
   } = useInHouseCheckout();
   const stripePubKey = stripe?.publishableKey;
+
   if (integration_type === 'stripe') {
     if (!stripePubKey) {
       throw new FrameError(
@@ -27,6 +28,7 @@ const SelectIntegration: FC<IIntegrationProvider> = ({ children }) => {
         'Missing stripe publishable key'
       );
     }
+
     if (!plan?.uuid) {
       throw new FrameError(
         "Payment integration can't be initialized",
@@ -34,6 +36,7 @@ const SelectIntegration: FC<IIntegrationProvider> = ({ children }) => {
         'Missing Plan UUID'
       );
     }
+
     return (
       <Fragment>
         <PriceDetails />
@@ -71,7 +74,7 @@ const SelectIntegration: FC<IIntegrationProvider> = ({ children }) => {
             frameStyle:
               'width:100%; min-width:376px; background-color: transparent; border: none;',
           }}
-          productId={plan?.uuid}
+          productId={plan?.paddlePlanId || undefined}
           targetComponent={paddleComponentId}
         >
           <Fragment>
@@ -89,9 +92,9 @@ export const IntegrationProvider: FC<IIntegrationProvider> = ({ children }) => {
   const {
     renderType,
     closeCheckoutModal,
-    state: { modal_open, getting_product, error_message },
+    state: { modal_open, getting_plan, error_message },
   } = useInHouseCheckout();
-  if (getting_product) {
+  if (getting_plan) {
     return <FormFieldSkeleton />;
   }
   if (error_message) {

@@ -40,6 +40,7 @@ const EmbeddedTemplated: ComponentStory<typeof CheckoutProvider> = (props) => {
 
 export const Embedded = EmbeddedTemplated.bind({});
 Embedded.args = {
+  preview: true,
   integrationType: 'stripe',
   paddleVendorID: 752,
   stripePublishableKey:

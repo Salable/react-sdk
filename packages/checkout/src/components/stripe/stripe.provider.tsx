@@ -1,4 +1,4 @@
-import { FC, useEffect, useState, useCallback, Fragment } from 'react';
+import React, { FC, useEffect, useState, useCallback, Fragment } from 'react';
 import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe, StripeElementsOptions } from '@stripe/stripe-js';
 import { SALABLE_API } from '../../constants/constants';

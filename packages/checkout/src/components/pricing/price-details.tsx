@@ -1,19 +1,19 @@
-import { useInHouseCheckout } from '../../context/use-checkout';
+import React, { useInHouseCheckout } from '../../context/use-checkout';
 import styles from './pricing.module.css';
 
 export const PriceDetails = () => {
   const {
-    state: { plan },
+    state: { plan, planCurrency },
   } = useInHouseCheckout();
   return (
     <p className={styles.pricing}>
       <span>Price</span>
       <span>
-        {plan?.pricingType !== 'free' && plan?.currency
-          ? `${new Intl.NumberFormat(plan.currency.locale, {
+        {plan && plan.pricingType !== 'free' && planCurrency
+          ? `${new Intl.NumberFormat(planCurrency.currency.shortName, {
               style: 'currency',
-              currency: plan.currency.shortName,
-            }).format(plan.price / 100)} / ${plan?.interval}`
+              currency: planCurrency.currency.shortName,
+            }).format(planCurrency.price / 100)} / ${plan?.interval}`
           : 'Free'}
       </span>
     </p>

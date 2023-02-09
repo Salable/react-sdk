@@ -1,13 +1,14 @@
-import { IPlan, IProduct } from '../interfaces/product.interface';
+import { IPlan, IPlanCurrency, IProduct } from '../interfaces/plan.interface';
+import decryptAccount from '../util/decrypt-data';
 
 export interface ICheckoutState {
-  getting_product: boolean;
   getting_plan: boolean;
   modal_open: boolean;
   preview: boolean;
   error_message: string | null;
   params: PaymentParams;
   product: IProduct | null;
+  planCurrency: IPlanCurrency | null;
   styles: {
     [x: string]: string;
   } | null;
@@ -18,21 +19,12 @@ export interface ICheckoutState {
 }
 
 export type ICheckoutAction =
-  | { type: 'GET_PRODUCT' }
-  | {
-      type: 'GET_PRODUCT_SUCCESSFUL';
-      payload: { product: IProduct };
-    }
   | {
       type: 'INITIALIZE_PREVIEW';
       payload: Pick<
         ICheckoutState,
         'integration_type' | 'paddle' | 'stripe' | 'plan' | 'styles'
       >;
-    }
-  | {
-      type: 'GET_PRODUCT_FAILED';
-      payload: { message: string };
     }
   | { type: 'GET_PLAN' }
   | {
@@ -69,10 +61,10 @@ export interface IStripeIntegrationProps {
 }
 
 export const initialCheckoutValues: ICheckoutState = {
-  getting_product: false,
   getting_plan: false,
   modal_open: false,
   preview: false,
+  planCurrency: null,
   params: {
     cancel_url: null,
     success_url: null,
@@ -87,7 +79,7 @@ export const initialCheckoutValues: ICheckoutState = {
   styles: null,
   plan: null,
   error_message: null,
-  integration_type: 'paddle',
+  integration_type: null,
 };
 
 /**
@@ -110,42 +102,59 @@ export const reducer = (
         styles: payload.styles,
       };
     }
-    case 'GET_PRODUCT': {
-      return {
-        ...state,
-        getting_product: true,
-      };
-    }
-    case 'GET_PRODUCT_SUCCESSFUL': {
-      return {
-        ...state,
-        getting_product: false,
-        error_message: null,
-        product: action.payload.product,
-        integration_type:
-          action.payload.product.organisationPaymentIntegration.integrationName,
-      };
-    }
-    case 'GET_PRODUCT_FAILED':
-    case 'INITIALIZATION_FAILED': {
-      return {
-        ...state,
-        getting_product: false,
-        error_message: action.payload.message,
-      };
-    }
     case 'GET_PLAN': {
       return {
         ...state,
-        getting_product: true,
+        getting_plan: true,
       };
     }
     case 'GET_PLAN_SUCCESSFUL': {
+      const { plan } = action.payload;
+      const integrationType =
+        plan.product.organisationPaymentIntegration.integrationName;
+      const accountData =
+        plan.product.organisationPaymentIntegration.accountData;
       return {
         ...state,
         getting_plan: false,
         error_message: null,
-        plan: action.payload.plan,
+        plan,
+        integration_type: integrationType,
+        product: plan.product,
+        stripe:
+          integrationType === 'stripe'
+            ? {
+                publishableKey: decryptAccount<'stripe'>(
+                  accountData.encryptedData,
+                  accountData.key
+                ).publishableKey,
+              }
+            : null,
+        paddle:
+          integrationType === 'paddle'
+            ? {
+                environment:
+                  action.payload.plan.environment === 'dev'
+                    ? 'sandbox'
+                    : undefined,
+                vendorID: parseInt(
+                  decryptAccount<'paddle'>(
+                    accountData.encryptedData,
+                    accountData.key
+                  ).paddleVendorId
+                ),
+              }
+            : null,
+        // In the future, currency you should be selected based on user's locale
+        planCurrency: plan.currencies[0],
+      };
+    }
+    case 'GET_PLAN_FAILED':
+    case 'INITIALIZATION_FAILED': {
+      return {
+        ...state,
+        getting_plan: false,
+        error_message: action.payload.message,
       };
     }
     default:
