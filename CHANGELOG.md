@@ -1,3 +1,10 @@
+# [1.3.0](https://github.com/Salable/react-sdk/compare/v1.2.0...v1.3.0) (2023-02-14)
+
+
+### Features
+
+* bumped core library version to 1.3.1 ([9993bf6](https://github.com/Salable/react-sdk/commit/9993bf642c2b138cafb662b51ab792274c9b1078))
+
 # [1.2.0](https://github.com/Salable/react-sdk/compare/v1.1.3...v1.2.0) (2023-02-14)
 
 
