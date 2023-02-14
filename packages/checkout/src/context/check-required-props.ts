@@ -49,6 +49,7 @@ export const checkRequiredProps = ({
         'developer'
       );
     }
+    return;
   }
 
   if (validateObject(demo.plan)) {

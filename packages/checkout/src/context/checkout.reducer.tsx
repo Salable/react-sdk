@@ -29,15 +29,19 @@ export type ICheckoutAction =
   | { type: 'GET_PLAN' }
   | {
       type: 'GET_PLAN_SUCCESSFUL';
-      payload: { plan: IPlan };
+      payload: {
+        plan: IPlan;
+      };
+    }
+  | {
+      type: 'INITIALIZE_PARAMS';
+      payload: {
+        params: PaymentParams;
+      };
     }
   | {
       type: 'GET_PLAN_FAILED';
-      payload: { message: string };
-    }
-  | {
-      type: 'INITIALIZATION_FAILED';
-      payload: { message: string };
+      payload?: { message?: string };
     }
   | { type: 'OPEN_MODAL' }
   | { type: 'CLOSE_MODAL' };
@@ -54,6 +58,7 @@ export interface PaymentParams {
 export interface IPaddleIntegrationProps {
   vendorID?: number;
   environment?: string;
+  planID?: string;
 }
 
 export interface IStripeIntegrationProps {
@@ -102,6 +107,13 @@ export const reducer = (
         styles: payload.styles,
       };
     }
+    case 'INITIALIZE_PARAMS': {
+      const { payload } = action;
+      return {
+        ...state,
+        params: payload.params,
+      };
+    }
     case 'GET_PLAN': {
       return {
         ...state,
@@ -133,28 +145,26 @@ export const reducer = (
         paddle:
           integrationType === 'paddle'
             ? {
-                environment:
-                  action.payload.plan.environment === 'dev'
-                    ? 'sandbox'
-                    : undefined,
+                environment: plan.environment === 'dev' ? 'sandbox' : undefined,
                 vendorID: parseInt(
                   decryptAccount<'paddle'>(
                     accountData.encryptedData,
                     accountData.key
                   ).paddleVendorId
                 ),
+                planID: plan.paddlePlanId || undefined,
               }
             : null,
         // In the future, currency you should be selected based on user's locale
         planCurrency: plan.currencies[0],
       };
     }
-    case 'GET_PLAN_FAILED':
-    case 'INITIALIZATION_FAILED': {
+    case 'GET_PLAN_FAILED': {
       return {
         ...state,
         getting_plan: false,
-        error_message: action.payload.message,
+        error_message:
+          action?.payload?.message || 'Failed to get plan required for payment',
       };
     }
     default:

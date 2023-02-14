@@ -37,52 +37,43 @@ const SelectIntegration: FC<IIntegrationProvider> = ({ children }) => {
       );
     }
 
-    return (
-      <Fragment>
-        <PriceDetails />
-        <StripeProvider planID={plan?.uuid} stripePubKey={stripePubKey} />
-        {children}
-      </Fragment>
-    );
+    return <StripeProvider planID={plan?.uuid} stripePubKey={stripePubKey} />;
   }
   if (integration_type === 'paddle') {
-    if (!paddle?.vendorID) {
+    if (!paddle?.planID) {
       throw new FrameError(
         "Payment integration can't be initialized",
         'developer',
-        'Missing vendor ID'
+        'Missing Plan ID'
       );
     }
     return (
-      <Fragment>
-        <PriceDetails />
-        <PaddleCheckoutProvider
-          environmentConfig={{
-            vendor: paddle?.vendorID,
-            environment: paddle?.environment,
-            eventCallback: (data) => {
-              switch (data.event) {
-                case 'Checkout.Complete':
-                  break;
-                case 'Checkout.Close':
-                  break;
-              }
-            },
-          }}
-          checkoutConfig={{
-            frameInitialHeight: 416,
-            frameStyle:
-              'width:100%; min-width:376px; background-color: transparent; border: none;',
-          }}
-          productId={plan?.paddlePlanId || undefined}
-          targetComponent={paddleComponentId}
-        >
-          <Fragment>
-            <div className={paddleComponentId} />
-            {children}
-          </Fragment>
-        </PaddleCheckoutProvider>
-      </Fragment>
+      <PaddleCheckoutProvider
+        environmentConfig={{
+          vendor: paddle?.vendorID,
+          environment: paddle?.environment,
+          eventCallback: (data) => {
+            switch (data.event) {
+              case 'Checkout.Complete':
+                break;
+              case 'Checkout.Close':
+                break;
+            }
+          },
+        }}
+        checkoutConfig={{
+          frameInitialHeight: 416,
+          frameStyle:
+            'width:100%; min-width:376px; background-color: transparent; border: none;',
+        }}
+        productId={paddle.planID}
+        targetComponent={paddleComponentId}
+      >
+        <Fragment>
+          <div className={paddleComponentId} />
+          {children}
+        </Fragment>
+      </PaddleCheckoutProvider>
     );
   }
   return <Fragment>{children}</Fragment>;
@@ -95,16 +86,27 @@ export const IntegrationProvider: FC<IIntegrationProvider> = ({ children }) => {
     state: { modal_open, getting_plan, error_message },
   } = useInHouseCheckout();
   if (getting_plan) {
-    return <FormFieldSkeleton />;
+    return (
+      <IntegrationWrapper>
+        <FormFieldSkeleton />
+      </IntegrationWrapper>
+    );
   }
   if (error_message) {
-    return <FormFieldError message={error_message} />;
+    return (
+      <IntegrationWrapper>
+        <FormFieldError message={error_message} />
+      </IntegrationWrapper>
+    );
   }
   if (renderType === 'modal') {
     return (
       <Fragment>
         <ModalComponent showPayment={modal_open} onClose={closeCheckoutModal}>
-          <SelectIntegration />
+          <IntegrationWrapper>
+            <PriceDetails />
+            <SelectIntegration />
+          </IntegrationWrapper>
         </ModalComponent>
         {children}
       </Fragment>
@@ -113,6 +115,7 @@ export const IntegrationProvider: FC<IIntegrationProvider> = ({ children }) => {
   // Default to rendering embedded
   return (
     <IntegrationWrapper>
+      <PriceDetails />
       <SelectIntegration>{children}</SelectIntegration>
     </IntegrationWrapper>
   );

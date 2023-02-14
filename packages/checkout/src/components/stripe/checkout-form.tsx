@@ -1,27 +1,26 @@
 import React, { useEffect, useState } from 'react';
 import {
   PaymentElement,
-  LinkAuthenticationElement,
   useStripe,
   useElements,
 } from '@stripe/react-stripe-js';
 import { StripePaymentElementOptions } from '@stripe/stripe-js';
 
-import './checkout-form.css';
+import styles from './stripe-form.module.css';
 import { useInHouseCheckout } from '../../context/use-checkout';
+import { ErrorMessage } from '../input-email';
 
-const CheckoutForm = () => {
+const CheckoutForm = ({ email }: { email: string }) => {
   const stripe = useStripe();
   const elements = useElements();
   const {
-    state: { preview },
+    state: { preview, params },
   } = useInHouseCheckout();
-
-  const [email, setEmail] = useState('');
-  const [message, setMessage] = useState<string | null>(null);
+  const [message, setMessage] = useState<string>();
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
+    setMessage('');
     if (!stripe) {
       return;
     }
@@ -78,7 +77,7 @@ const CheckoutForm = () => {
             },
           },
           // Make sure to change this to your payment completion page
-          return_url: 'http://localhost:6006',
+          return_url: params.success_url || window.location.origin,
         },
       });
 
@@ -88,7 +87,7 @@ const CheckoutForm = () => {
       // be redirected to an intermediate site first to authorize the payment, then
       // redirected to the `return_url`.
       if (error.type === 'card_error' || error.type === 'validation_error') {
-        setMessage(error?.message || null);
+        setMessage(error?.message || undefined);
       } else {
         setMessage('An unexpected error occurred.');
       }
@@ -103,20 +102,17 @@ const CheckoutForm = () => {
 
   return (
     <form id="payment-form" onSubmit={handleSubmit}>
-      <LinkAuthenticationElement
-        id="link-authentication-element"
-        onChange={(e) => {
-          setEmail(e.value.email);
-        }}
+      <PaymentElement
+        className={styles['mb-24']}
+        options={paymentElementOptions}
       />
-      <PaymentElement id="payment-element" options={paymentElementOptions} />
       <button disabled={isLoading || !stripe || !elements} id="submit">
         <span id="button-text">
           {isLoading ? <div className="spinner" id="spinner" /> : 'Pay now'}
         </span>
       </button>
       {/* Show any error or success messages */}
-      {message && <div id="payment-message">{message}</div>}
+      <ErrorMessage message={message} />
     </form>
   );
 };

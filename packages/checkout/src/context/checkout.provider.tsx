@@ -24,6 +24,7 @@ const CheckoutProviderComponent: FC<ICheckoutProviderOptions> = ({
   paddle,
   planID,
   successURL,
+  paddlePlanID,
   preview = false,
 }) => {
   checkRequiredProps({
@@ -42,6 +43,7 @@ const CheckoutProviderComponent: FC<ICheckoutProviderOptions> = ({
       plan,
       stripePublishableKey,
       styles,
+      paddlePlanID,
     },
     preview,
   });
@@ -52,17 +54,22 @@ const CheckoutProviderComponent: FC<ICheckoutProviderOptions> = ({
 
   useMemo(() => {
     if (!preview) return;
+    if (!stripePublishableKey)
+      throw new FrameError('Missing Stripe Publishable Key', 'developer');
+    if (!integrationType)
+      throw new FrameError('Missing Integration type', 'developer');
     dispatch({
       type: 'INITIALIZE_PREVIEW',
       payload: {
         paddle: {
           environment: 'sandbox',
           vendorID: paddleVendorID,
+          planID: paddlePlanID,
         },
         stripe: {
-          publishableKey: stripePublishableKey || '',
+          publishableKey: stripePublishableKey,
         },
-        integration_type: integrationType || '',
+        integration_type: integrationType,
         plan: plan || null,
         styles: styles || null,
       },
@@ -76,6 +83,29 @@ const CheckoutProviderComponent: FC<ICheckoutProviderOptions> = ({
     preview,
   ]);
 
+  useMemo(() => {
+    if (preview) return;
+    if (!APIKey) throw new FrameError('Missing API Key', 'developer');
+    if (!planID) throw new FrameError('Missing Plans ID', 'developer');
+    if (!cancelURL) throw new FrameError('Missing Cancel URL', 'developer');
+    if (!granteeID) throw new FrameError('Missing Grantee ID', 'developer');
+    if (!memberID) throw new FrameError('Missing Member ID', 'developer');
+    if (!successURL) throw new FrameError('Missing Success URl', 'developer');
+    dispatch({
+      type: 'INITIALIZE_PARAMS',
+      payload: {
+        params: {
+          cancel_url: cancelURL,
+          grantee_id: granteeID,
+          member_id: memberID,
+          success_url: successURL,
+          plan_id: planID,
+          api_key: APIKey,
+        },
+      },
+    });
+  }, [cancelURL, granteeID, memberID, successURL, planID, APIKey]);
+
   /**
    * Fetch plan with details, payment integration
    * using PlanID and APIKey
@@ -86,15 +116,28 @@ const CheckoutProviderComponent: FC<ICheckoutProviderOptions> = ({
     if (!planID) throw new FrameError('Missing Plan ID', 'developer');
     if (!APIKey) throw new FrameError('Missing API Key', 'developer');
     void (async () => {
-      const response = await fetch(
-        `${SALABLE_API}/plans/${planID}?expand=[product.organisationPaymentIntegration,features.feature,features.enumValue, currencies.currency]`,
-        {
-          method: 'GET',
-          headers: { 'Content-Type': 'application/json', 'x-api-key': APIKey },
-        }
-      );
-      const data = (await response.json()) as IPlan;
-      dispatch({ type: 'GET_PLAN_SUCCESSFUL', payload: { plan: data } });
+      dispatch({ type: 'GET_PLAN' });
+      try {
+        const response = await fetch(
+          `${SALABLE_API}/plans/${planID}?expand=[product.organisationPaymentIntegration,features.feature,features.enumValue, currencies.currency]`,
+          {
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application/json',
+              'x-api-key': APIKey,
+            },
+          }
+        );
+        const data = (await response.json()) as IPlan;
+        dispatch({
+          type: 'GET_PLAN_SUCCESSFUL',
+          payload: {
+            plan: data,
+          },
+        });
+      } catch (error) {
+        dispatch({ type: 'GET_PLAN_FAILED' });
+      }
     })();
   }, []);
 

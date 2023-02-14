@@ -14,6 +14,7 @@ export interface IRequiredTestProps {
   integrationType?: IIntegrationType;
   stripePublishableKey?: string;
   paddleVendorID?: number;
+  paddlePlanID?: string;
 }
 
 export interface IRequiredProps {

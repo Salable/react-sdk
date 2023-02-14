@@ -27,7 +27,11 @@ const EmbeddedTemplated: ComponentStory<typeof CheckoutProvider> = (props) => {
         displayName: 'Paid Stri Plan',
         interval: 'month',
         length: 1,
-        price: 499,
+        currencies: [
+          {
+            price: 499,
+          },
+        ],
         pricingType: 'paid',
         currency: {
           shortName: 'USD',
@@ -41,7 +45,8 @@ const EmbeddedTemplated: ComponentStory<typeof CheckoutProvider> = (props) => {
 export const Embedded = EmbeddedTemplated.bind({});
 Embedded.args = {
   preview: true,
-  integrationType: 'stripe',
+  paddlePlanID: '16504',
+  integrationType: 'paddle',
   paddleVendorID: 752,
   stripePublishableKey:
     'pk_test_51M4mzkChnZeGQTI0Vn4NxPL6hKlkmX0Why53tXh1PsJn7r57ccmcWtR6Ytbies2ttBy74zwcXMrIDzgx98bCpPeP00LBAMsW60',
