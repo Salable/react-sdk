@@ -16,7 +16,7 @@ interface IIntegrationProvider {
 const paddleComponentId = 'paddle-wrapper';
 const SelectIntegration: FC<IIntegrationProvider> = ({ children }) => {
   const {
-    state: { integration_type, paddle, stripe, plan },
+    state: { integration_type, paddle, stripe, plan, params },
   } = useInHouseCheckout();
   const stripePubKey = stripe?.publishableKey;
 
@@ -63,6 +63,7 @@ const SelectIntegration: FC<IIntegrationProvider> = ({ children }) => {
         }}
         checkoutConfig={{
           frameInitialHeight: 416,
+          success: params.success_url,
           frameStyle:
             'width:100%; min-width:376px; background-color: transparent; border: none;',
         }}
