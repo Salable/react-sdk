@@ -15,7 +15,8 @@ export interface IPricingTableDefaultPlanOptions {
 export interface IPricingTableReact {
   envConfig: {
     pricingTableNode?: Element | null;
-    productUuid: string;
+    productUuid?: string;
+    pricingTableUuid?: string;
     apiKey: string;
     globalPlanOptions?: IPricingTableDefaultPlanOptions;
     individualPlanOptions?: {
