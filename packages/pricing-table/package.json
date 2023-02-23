@@ -1,6 +1,6 @@
 {
   "name": "@salable/pricing-table-react",
-  "version": "1.0.0",
+  "version": "1.4.0",
   "description": "A react component to render your Salable pricing table in your app.",
   "scripts": {
     "storybook": "start-storybook -p 6006",
@@ -27,12 +27,12 @@
     "@storybook/manager-webpack4": "^6.5.5",
     "@storybook/react": "^6.5.5",
     "@storybook/testing-library": "0.0.11",
-    "@types/react": "^18.0.9",
+    "@types/react": "^17.0.38",
     "babel-loader": "^8.2.5",
     "tslib": "^2.4.0"
   },
   "peerDependencies": {
-    "react": "^18.1.0",
-    "react-dom": "^18.1.0"
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2"
   }
 }

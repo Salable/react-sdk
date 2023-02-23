@@ -15,7 +15,8 @@ export interface IPricingTableDefaultPlanOptions {
 export interface IPricingTableReact {
   envConfig: {
     pricingTableNode?: Element | null;
-    productUuid: string;
+    productUuid?: string;
+    pricingTableUuid?: string;
     apiKey: string;
     globalPlanOptions?: IPricingTableDefaultPlanOptions;
     individualPlanOptions?: {
@@ -54,7 +55,7 @@ export type IPricingTable = {
 
 declare global {
   interface Window {
-    PricingTable: {
+    SalablePricingTable: {
       new (
         envConfig: IPricingTableReact['envConfig'],
         checkoutConfig: IPricingTableReact['checkoutConfig']

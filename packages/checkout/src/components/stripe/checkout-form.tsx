@@ -10,7 +10,13 @@ import styles from './stripe-form.module.css';
 import { useInHouseCheckout } from '../../context/use-checkout';
 import { ErrorMessage } from '../input-email';
 
-const CheckoutForm = ({ email }: { email: string }) => {
+const CheckoutForm = ({
+  email,
+  clientSecret,
+}: {
+  email: string;
+  clientSecret: string;
+}) => {
   const stripe = useStripe();
   const elements = useElements();
   const {
@@ -24,10 +30,6 @@ const CheckoutForm = ({ email }: { email: string }) => {
     if (!stripe) {
       return;
     }
-
-    const clientSecret = new URLSearchParams(window.location.search).get(
-      'payment_intent_client_secret'
-    );
 
     if (!clientSecret) {
       return;

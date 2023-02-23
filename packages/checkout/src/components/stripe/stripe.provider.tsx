@@ -90,7 +90,7 @@ export const StripeProvider: FC<IStripeProvider> = ({
     return (
       <Fragment>
         <Elements options={options} stripe={stripePromise()}>
-          <CheckoutForm email={userEmail} />
+          <CheckoutForm email={userEmail} clientSecret={clientSecret} />
         </Elements>
       </Fragment>
     );
