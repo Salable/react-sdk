@@ -1,3 +1,10 @@
+# [1.4.0](https://github.com/Salable/react-sdk/compare/v1.3.0...v1.4.0) (2023-02-23)
+
+
+### Features
+
+* **custom pricing table:** new property in envConfig to support pricingTableUuid ([34a3d34](https://github.com/Salable/react-sdk/commit/34a3d345b84133b0a8b272f8949fdd7662548b36))
+
 # [1.3.0](https://github.com/Salable/react-sdk/compare/v1.2.0...v1.3.0) (2023-02-14)
 
 
