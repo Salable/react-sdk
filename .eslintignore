@@ -1,3 +1,5 @@
 dist
 cdk.out
 **/*.d.ts
+.docusaurus
+build
