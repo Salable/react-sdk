@@ -36,7 +36,10 @@ const config = {
     commonjs(),
     typescript({
       tsconfig: 'tsconfig.json',
-    })
+      tsconfigOverride: {
+        exclude: ['docs/**'],
+      },
+    }),
   ],
 };
 
