@@ -1,5 +1,3 @@
-import { IStatus } from './product.interface';
-
 export interface IOrganisationPaymentIntegrationAccountData {
   key: string;
   encryptedData: string;
@@ -22,7 +20,7 @@ export interface IProduct {
   logoUrl: null | string;
   displayName: string;
   organisation: string;
-  status: IStatus;
+  status: string;
   paid: boolean;
   organisationPaymentIntegrationUuid: string;
   paymentIntegrationProductId: string;
@@ -35,7 +33,7 @@ export interface IPlan {
   name: string;
   description: null | string;
   displayName: string;
-  status: IStatus;
+  status: string;
   trialDays: null | string;
   evaluation: boolean;
   evalDays: number;
@@ -64,7 +62,7 @@ export interface IFeature {
   description: string;
   displayName: string;
   variableName: string;
-  status: IStatus;
+  status: string;
   visibility: string;
   valueType: string;
   defaultValue: string;
