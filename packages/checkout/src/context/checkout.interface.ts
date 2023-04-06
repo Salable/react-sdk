@@ -6,14 +6,36 @@ import { IPlan } from '../interfaces/plan.interface';
 export type IIntegrationType = 'paddle' | 'stripe';
 
 export interface ICheckoutStyle {
-  [x: string]: string;
+  fontFamily?: string;
+  spacingUnit?: string;
+  borderRadius?: string;
+  primaryColor?: string;
+  backgroundColor?: string;
 }
 export interface IRequiredTestProps {
+  /**
+   * For development purpose, when preview is `true`
+   */
   plan?: IPlan | null;
+  /**
+   * For development purpose, when preview is `true`
+   */
   styles?: ICheckoutStyle | null;
+  /**
+   * For development purpose, when preview is `true`
+   */
   integrationType?: IIntegrationType;
+  /**
+   * For development purpose, when preview is `true`
+   */
   stripePublishableKey?: string;
+  /**
+   * For development purpose, when preview is `true`
+   */
   paddleVendorID?: number;
+  /**
+   * For development purpose, when preview is `true`
+   */
   paddlePlanID?: string;
 }
 
@@ -54,5 +76,6 @@ export interface ICheckoutProviderOptions
    * Default is `embedded`
    */
   renderType?: IRenderType;
+  topComponent?: React.ReactNode;
   children?: React.ReactNode;
 }

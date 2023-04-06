@@ -8,7 +8,7 @@ export default {
   component: CheckoutProvider,
   argTypes: {},
   parameters: {
-    layout: 'centered',
+    layout: 'fullscreen',
   },
 } as ComponentMeta<typeof CheckoutProvider>;
 
@@ -16,12 +16,6 @@ const EmbeddedTemplated: ComponentStory<typeof CheckoutProvider> = (props) => {
   return (
     <CheckoutProvider
       {...props}
-      styles={{
-        fontFamily: 'Roboto, system-ui, sans-serif',
-        primaryColor: '#028737',
-        spacingUnit: '2px',
-        borderRadius: '20px',
-      }}
       plan={{
         uuid: '4511e858-cc5d-438d-be9d-7824ea911bef',
         name: 'paid stri plan',
@@ -147,4 +141,12 @@ Embedded.args = {
   paddleVendorID: 752,
   stripePublishableKey:
     'pk_test_51M4mzkChnZeGQTI0Vn4NxPL6hKlkmX0Why53tXh1PsJn7r57ccmcWtR6Ytbies2ttBy74zwcXMrIDzgx98bCpPeP00LBAMsW60',
+  styles: {
+    fontFamily:
+      "'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif",
+    primaryColor: '#028737',
+    backgroundColor: '#525f7f',
+    spacingUnit: '4px',
+    borderRadius: '20px',
+  },
 };

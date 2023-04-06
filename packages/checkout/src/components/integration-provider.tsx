@@ -11,6 +11,7 @@ import { StripeProvider } from './stripe/stripe.provider';
 
 interface IIntegrationProvider {
   children?: React.ReactNode;
+  topComponent?: React.ReactNode;
 }
 
 const paddleComponentId = 'paddle-wrapper';
@@ -80,7 +81,10 @@ const SelectIntegration: FC<IIntegrationProvider> = ({ children }) => {
   return <Fragment>{children}</Fragment>;
 };
 
-export const IntegrationProvider: FC<IIntegrationProvider> = ({ children }) => {
+export const IntegrationProvider: FC<IIntegrationProvider> = ({
+  children,
+  topComponent,
+}) => {
   const {
     renderType,
     closeCheckoutModal,
@@ -88,14 +92,14 @@ export const IntegrationProvider: FC<IIntegrationProvider> = ({ children }) => {
   } = useInHouseCheckout();
   if (getting_plan) {
     return (
-      <IntegrationWrapper>
+      <IntegrationWrapper topComponent={topComponent}>
         <FormFieldSkeleton />
       </IntegrationWrapper>
     );
   }
   if (error_message) {
     return (
-      <IntegrationWrapper>
+      <IntegrationWrapper topComponent={topComponent}>
         <FormFieldError message={error_message} />
       </IntegrationWrapper>
     );
@@ -104,7 +108,7 @@ export const IntegrationProvider: FC<IIntegrationProvider> = ({ children }) => {
     return (
       <Fragment>
         <ModalComponent showPayment={modal_open} onClose={closeCheckoutModal}>
-          <IntegrationWrapper>
+          <IntegrationWrapper topComponent={topComponent}>
             <PriceDetails />
             <SelectIntegration />
           </IntegrationWrapper>
@@ -115,7 +119,7 @@ export const IntegrationProvider: FC<IIntegrationProvider> = ({ children }) => {
   }
   // Default to rendering embedded
   return (
-    <IntegrationWrapper>
+    <IntegrationWrapper topComponent={topComponent}>
       <PriceDetails />
       <SelectIntegration>{children}</SelectIntegration>
     </IntegrationWrapper>

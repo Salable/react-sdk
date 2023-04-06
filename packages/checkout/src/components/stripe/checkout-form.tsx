@@ -20,7 +20,7 @@ const CheckoutForm = ({
   const stripe = useStripe();
   const elements = useElements();
   const {
-    state: { preview, params },
+    state: { preview, params, styles: customStyles },
   } = useInHouseCheckout();
   const [message, setMessage] = useState<string>();
   const [isLoading, setIsLoading] = useState(false);
@@ -108,13 +108,21 @@ const CheckoutForm = ({
         className={styles['mb-24']}
         options={paymentElementOptions}
       />
-      <button disabled={isLoading || !stripe || !elements} id="submit">
+      <button
+        disabled={isLoading || !stripe || !elements}
+        id="submit"
+        style={{
+          borderRadius: customStyles?.borderRadius,
+          padding: customStyles?.spacingUnit3,
+          backgroundColor: customStyles?.primaryColor,
+        }}
+      >
         <span id="button-text">
           {isLoading ? <div className="spinner" id="spinner" /> : 'Pay now'}
         </span>
       </button>
       {/* Show any error or success messages */}
-      <ErrorMessage message={message} />
+      {!preview ? <ErrorMessage message={message} /> : null}
     </form>
   );
 };

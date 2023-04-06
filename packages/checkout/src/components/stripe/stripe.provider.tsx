@@ -23,7 +23,7 @@ export const StripeProvider: FC<IStripeProvider> = ({
 }) => {
   const {
     preview,
-    state: { params },
+    state: { params, styles: customStyles },
   } = useInHouseCheckout();
   const [errorMessage, setErrorMessage] = useState('');
   const [clientSecret, setClientSecret] = useState(
@@ -83,6 +83,12 @@ export const StripeProvider: FC<IStripeProvider> = ({
     clientSecret,
     appearance: {
       theme: 'stripe',
+      variables: {
+        fontFamily: customStyles?.fontFamily,
+        borderRadius: customStyles?.borderRadius,
+        spacingUnit: customStyles?.spacingUnit,
+        colorPrimary: customStyles?.primaryColor,
+      },
     },
   };
 
@@ -102,7 +108,16 @@ export const StripeProvider: FC<IStripeProvider> = ({
         onChange={onEmailChange}
         errorMessage={emailError}
       />
-      <button disabled={creatingIntent} id="submit" type="submit">
+      <button
+        disabled={creatingIntent}
+        id="submit"
+        type="submit"
+        style={{
+          borderRadius: customStyles?.borderRadius,
+          padding: customStyles?.spacingUnit3,
+          backgroundColor: customStyles?.primaryColor,
+        }}
+      >
         <span id="button-text">
           {creatingIntent ? (
             <div className="spinner" id="spinner" />

@@ -14,9 +14,8 @@ form {
 /* Buttons and links */
 button {
   background: #5469d4;
-  font-family: Arial, sans-serif;
+  font-family: inherit;
   color: #ffffff;
-  border-radius: 4px;
   border: 0;
   padding: 12px 16px;
   font-size: 16px;

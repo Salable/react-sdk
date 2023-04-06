@@ -1,5 +1,7 @@
 import { IPlan, IPlanCurrency, IProduct } from '../interfaces/plan.interface';
 import decryptAccount from '../util/decrypt-data';
+import { transformUnit } from '../util/transform-unit';
+import { ICheckoutStyle } from './checkout.interface';
 
 export interface ICheckoutState {
   getting_plan: boolean;
@@ -9,9 +11,7 @@ export interface ICheckoutState {
   params: PaymentParams;
   product: IProduct | null;
   planCurrency: IPlanCurrency | null;
-  styles: {
-    [x: string]: string;
-  } | null;
+  styles: (ICheckoutStyle & { spacingUnit3?: string }) | null;
   plan: IPlan | null;
   paddle: IPaddleIntegrationProps | null;
   stripe: IStripeIntegrationProps | null;
@@ -23,7 +23,7 @@ export type ICheckoutAction =
       type: 'INITIALIZE_PREVIEW';
       payload: Pick<
         ICheckoutState,
-        'integration_type' | 'paddle' | 'stripe' | 'plan' | 'styles'
+        'integration_type' | 'paddle' | 'stripe' | 'plan'
       >;
     }
   | { type: 'GET_PLAN' }
@@ -43,6 +43,11 @@ export type ICheckoutAction =
       type: 'GET_PLAN_FAILED';
       payload?: { message?: string };
     }
+  | {
+      type: 'GET_STYLING_SUCCESSFUL';
+      payload: ICheckoutStyle;
+    }
+  | { type: 'GET_STYLING_FAILED' }
   | { type: 'OPEN_MODAL' }
   | { type: 'CLOSE_MODAL' };
 
@@ -81,7 +86,13 @@ export const initialCheckoutValues: ICheckoutState = {
   product: null,
   paddle: null,
   stripe: null,
-  styles: null,
+  styles: {
+    fontFamily: 'Helvetica Neue, Helvetica, Arial, sans-serif',
+    backgroundColor: '#F8F9FF',
+    primaryColor: '#554FFD',
+    spacingUnit: '4px',
+    borderRadius: '4px',
+  },
   plan: null,
   error_message: null,
   integration_type: null,
@@ -97,6 +108,7 @@ export const reducer = (
   switch (action.type) {
     case 'INITIALIZE_PREVIEW': {
       const { payload } = action;
+
       return {
         ...state,
         preview: true,
@@ -104,7 +116,6 @@ export const reducer = (
         integration_type: payload.integration_type,
         stripe: payload.stripe,
         plan: payload.plan,
-        styles: payload.styles,
       };
     }
     case 'INITIALIZE_PARAMS': {
@@ -112,6 +123,30 @@ export const reducer = (
       return {
         ...state,
         params: payload.params,
+      };
+    }
+    case 'GET_STYLING_SUCCESSFUL': {
+      const { payload } = action;
+      return {
+        ...state,
+        styles: {
+          ...state.styles,
+          ...payload,
+          spacingUnit3: transformUnit(
+            state.styles?.spacingUnit || '',
+            payload?.spacingUnit,
+            3
+          ),
+          borderRadius: transformUnit(
+            state.styles?.borderRadius || '',
+            payload?.borderRadius
+          ),
+        },
+      };
+    }
+    case 'GET_STYLING_FAILED': {
+      return {
+        ...state,
       };
     }
     case 'GET_PLAN': {

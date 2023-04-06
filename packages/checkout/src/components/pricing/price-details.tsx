@@ -1,4 +1,5 @@
-import React, { useInHouseCheckout } from '../../context/use-checkout';
+import React from 'react';
+import { useInHouseCheckout } from '../../context/use-checkout';
 import styles from './pricing.module.css';
 
 export const PriceDetails = () => {
@@ -7,9 +8,9 @@ export const PriceDetails = () => {
   } = useInHouseCheckout();
   return (
     <p className={styles.pricing}>
-      <span>Price</span>
-      <span>
-        {plan && plan.pricingType !== 'free' && planCurrency
+      <span className={styles.pricing__label}>Price</span>
+      <span className={styles.pricing__price}>
+        {plan && plan.pricingType === 'paid' && planCurrency
           ? `${new Intl.NumberFormat(planCurrency.currency.shortName, {
               style: 'currency',
               currency: planCurrency.currency.shortName,

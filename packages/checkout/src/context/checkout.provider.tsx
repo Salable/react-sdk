@@ -8,6 +8,8 @@ import { checkRequiredProps } from './check-required-props';
 import { FrameError } from '../util/message-error';
 import { SALABLE_API } from '../constants/constants';
 import { IPlan } from '../interfaces/plan.interface';
+import { ICheckoutStylingResponse } from '../interfaces/checkout.interface';
+import { APIFetch } from '../util/functions';
 
 const CheckoutProviderComponent: FC<ICheckoutProviderOptions> = ({
   integrationType,
@@ -26,6 +28,7 @@ const CheckoutProviderComponent: FC<ICheckoutProviderOptions> = ({
   successURL,
   paddlePlanID,
   preview = false,
+  topComponent,
 }) => {
   checkRequiredProps({
     production: {
@@ -53,6 +56,12 @@ const CheckoutProviderComponent: FC<ICheckoutProviderOptions> = ({
   });
 
   useMemo(() => {
+    if (styles) {
+      dispatch({
+        type: 'GET_STYLING_SUCCESSFUL',
+        payload: styles,
+      });
+    }
     if (!preview) return;
     if (!stripePublishableKey)
       throw new FrameError('Missing Stripe Publishable Key', 'developer');
@@ -71,7 +80,6 @@ const CheckoutProviderComponent: FC<ICheckoutProviderOptions> = ({
         },
         integration_type: integrationType,
         plan: plan || null,
-        styles: styles || null,
       },
     });
   }, [
@@ -118,23 +126,42 @@ const CheckoutProviderComponent: FC<ICheckoutProviderOptions> = ({
     void (async () => {
       dispatch({ type: 'GET_PLAN' });
       try {
-        const response = await fetch(
-          `${SALABLE_API}/plans/${planID}?expand=[product.organisationPaymentIntegration,features.feature,features.enumValue, currencies.currency]`,
-          {
+        const [planResponse, stylingResponse] = await Promise.allSettled([
+          APIFetch<IPlan>(
+            `/plans/${planID}?expand=[product.organisationPaymentIntegration,features.feature,features.enumValue, currencies.currency]`,
+            {
+              method: 'GET',
+              APIKey,
+            }
+          ),
+          APIFetch<ICheckoutStylingResponse>('/checkout/styling', {
             method: 'GET',
-            headers: {
-              'Content-Type': 'application/json',
-              'x-api-key': APIKey,
+            APIKey,
+          }),
+        ]);
+        if (planResponse.status === 'fulfilled') {
+          dispatch({
+            type: 'GET_PLAN_SUCCESSFUL',
+            payload: {
+              plan: planResponse.value,
             },
-          }
-        );
-        const data = (await response.json()) as IPlan;
-        dispatch({
-          type: 'GET_PLAN_SUCCESSFUL',
-          payload: {
-            plan: data,
-          },
-        });
+          });
+        } else {
+          dispatch({ type: 'GET_PLAN_FAILED' });
+        }
+        if (stylingResponse.status === 'fulfilled') {
+          dispatch({
+            type: 'GET_STYLING_SUCCESSFUL',
+            payload: {
+              ...stylingResponse.value.checkoutStyling,
+              ...styles,
+            },
+          });
+        } else {
+          dispatch({
+            type: 'GET_STYLING_FAILED',
+          });
+        }
       } catch (error) {
         dispatch({ type: 'GET_PLAN_FAILED' });
       }
@@ -172,7 +199,9 @@ const CheckoutProviderComponent: FC<ICheckoutProviderOptions> = ({
    */
   return (
     <CheckoutContext.Provider value={values}>
-      <IntegrationProvider>{children}</IntegrationProvider>
+      <IntegrationProvider topComponent={topComponent}>
+        {children}
+      </IntegrationProvider>
     </CheckoutContext.Provider>
   );
 };

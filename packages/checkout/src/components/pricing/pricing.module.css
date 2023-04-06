@@ -2,4 +2,13 @@
   display: flex;
   justify-content: space-between;
   margin-bottom: 24px;
+  font-weight: 400;
+}
+
+.pricing__label {
+  font-size: 24px;
+}
+
+.pricing__price {
+  font-size: 15px;
 }
