@@ -9,12 +9,10 @@ export default {
   argTypes: {},
 } as ComponentMeta<typeof SalablePricingTableReact>;
 
-const LightTemplate: ComponentStory<typeof SalablePricingTableReact> = (
-  args
-) => <SalablePricingTableReact {...args} />;
-const DarkTemplate: ComponentStory<typeof SalablePricingTableReact> = (
-  args
-) => (
+const LightTemplate: ComponentStory<typeof SalablePricingTableReact> = (args) => (
+  <SalablePricingTableReact {...args} />
+);
+const DarkTemplate: ComponentStory<typeof SalablePricingTableReact> = (args) => (
   <div
     style={{
       background: 'black',

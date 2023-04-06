@@ -1,3 +1,27 @@
+# [1.8.0](https://github.com/Salable/react-sdk/compare/v1.7.0...v1.8.0) (2023-04-05)
+
+### Features
+
+- bumped core library version to 1.5.0 ([18204ba](https://github.com/Salable/react-sdk/commit/18204ba80da07a1cd439b815787e0e1178802252))
+
+# [1.7.0](https://github.com/Salable/react-sdk/compare/v1.6.0...v1.7.0) (2023-03-30)
+
+### Features
+
+- bumped core library version to 1.4.2 ([9842d2e](https://github.com/Salable/react-sdk/commit/9842d2e2f9536e4f82a2614f75ba15ef6b0110ba))
+
+# [1.6.0](https://github.com/Salable/react-sdk/compare/v1.5.0...v1.6.0) (2023-03-30)
+
+### Features
+
+- bumped core library version to 1.4.1 ([d84cebf](https://github.com/Salable/react-sdk/commit/d84cebf6592a6659bf019fbd30314a3fadb83f24))
+
+# [1.5.0](https://github.com/Salable/react-sdk/compare/v1.4.0...v1.5.0) (2023-03-22)
+
+### Features
+
+- bumped core library version to 1.4.0 ([d261cbc](https://github.com/Salable/react-sdk/commit/d261cbc03eb32914c53b7737510fd0c166f8a42f))
+
 # [1.4.0](https://github.com/Salable/react-sdk/compare/v1.3.0...v1.4.0) (2023-02-23)
 
 ### Features
