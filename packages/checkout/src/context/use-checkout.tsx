@@ -25,7 +25,6 @@ const useCheckout = (): Pick<ICheckoutContext, 'openCheckoutModal'> => {
   };
 };
 
-export const useInHouseCheckout = (): ICheckoutContext =>
-  useContext(CheckoutContext);
+export const useInHouseCheckout = (): ICheckoutContext => useContext(CheckoutContext);
 
 export default useCheckout;

@@ -1,11 +1,7 @@
 import { useEffect, useState } from 'react';
 import { IEnvironmentConfig, IPaddle } from '../../interfaces/paddle.interface';
 
-const usePaddle = ({
-  environment,
-  vendor,
-  eventCallback,
-}: IEnvironmentConfig) => {
+const usePaddle = ({ environment, vendor, eventCallback }: IEnvironmentConfig) => {
   const [paddle, setPaddle] = useState<IPaddle | null>(null);
   useEffect(() => {
     if (paddle) return;

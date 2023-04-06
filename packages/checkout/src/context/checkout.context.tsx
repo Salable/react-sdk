@@ -8,10 +8,7 @@ import { FrameError } from '../util/message-error';
 import { initialCheckoutValues, ICheckoutState } from './checkout.reducer';
 
 const stub = (): never => {
-  throw new FrameError(
-    'You forgot to wrap your component in <CheckoutProvider>.',
-    'developer'
-  );
+  throw new FrameError('You forgot to wrap your component in <CheckoutProvider>.', 'developer');
 };
 export interface ICheckoutContext {
   preview: boolean;
@@ -37,7 +34,6 @@ const initialContext: ICheckoutContext = {
 
 const CheckoutContext = createContext<ICheckoutContext>(initialContext);
 
-export const useCheckoutContext = (): ICheckoutContext =>
-  useContext(CheckoutContext);
+export const useCheckoutContext = (): ICheckoutContext => useContext(CheckoutContext);
 
 export default CheckoutContext;

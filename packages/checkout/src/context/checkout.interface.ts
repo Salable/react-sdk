@@ -65,9 +65,7 @@ export interface IRequiredProps {
   paddle?: IPaddleEventCallback;
 }
 
-export interface ICheckoutProviderOptions
-  extends IRequiredProps,
-    IRequiredTestProps {
+export interface ICheckoutProviderOptions extends IRequiredProps, IRequiredTestProps {
   /**
    * For development purpose. Default is `false`
    */

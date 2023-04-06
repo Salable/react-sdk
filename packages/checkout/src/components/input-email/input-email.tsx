@@ -20,10 +20,7 @@ export const InputEmail: FC<IInputEmail> = ({
   style,
 }) => {
   return (
-    <div
-      data-field="email"
-      className={classNames(styles['p-field'], styles['mb-24'], className)}
-    >
+    <div data-field="email" className={classNames(styles['p-field'], styles['mb-24'], className)}>
       <label htmlFor="email-input" className={classNames(styles.label)}>
         {label}
       </label>

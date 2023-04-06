@@ -8,9 +8,7 @@ const decryptAccount = <T extends 'stripe' | 'paddle'>(
   ? { publishableKey: string; secretKey: string }
   : { paddleVendorId: string; paddleAuthKey: string } => {
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call
-  const decryptedData = cryptoJs.AES.decrypt(data, key).toString(
-    cryptoJs.enc.Utf8
-  );
+  const decryptedData = cryptoJs.AES.decrypt(data, key).toString(cryptoJs.enc.Utf8);
 
   // eslint-disable-next-line @typescript-eslint/no-unsafe-return
   return JSON.parse(decryptedData);

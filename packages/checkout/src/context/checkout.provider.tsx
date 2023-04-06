@@ -63,10 +63,8 @@ const CheckoutProviderComponent: FC<ICheckoutProviderOptions> = ({
       });
     }
     if (!preview) return;
-    if (!stripePublishableKey)
-      throw new FrameError('Missing Stripe Publishable Key', 'developer');
-    if (!integrationType)
-      throw new FrameError('Missing Integration type', 'developer');
+    if (!stripePublishableKey) throw new FrameError('Missing Stripe Publishable Key', 'developer');
+    if (!integrationType) throw new FrameError('Missing Integration type', 'developer');
     dispatch({
       type: 'INITIALIZE_PREVIEW',
       payload: {
@@ -82,14 +80,7 @@ const CheckoutProviderComponent: FC<ICheckoutProviderOptions> = ({
         plan: plan || null,
       },
     });
-  }, [
-    paddleVendorID,
-    stripePublishableKey,
-    integrationType,
-    plan,
-    styles,
-    preview,
-  ]);
+  }, [paddleVendorID, stripePublishableKey, integrationType, plan, styles, preview]);
 
   useMemo(() => {
     if (preview) return;
@@ -199,9 +190,7 @@ const CheckoutProviderComponent: FC<ICheckoutProviderOptions> = ({
    */
   return (
     <CheckoutContext.Provider value={values}>
-      <IntegrationProvider topComponent={topComponent}>
-        {children}
-      </IntegrationProvider>
+      <IntegrationProvider topComponent={topComponent}>{children}</IntegrationProvider>
     </CheckoutContext.Provider>
   );
 };

@@ -7,13 +7,8 @@ interface ICheckoutRequiredProps {
   preview: boolean;
 }
 
-export const checkRequiredProps = ({
-  production,
-  demo,
-  preview,
-}: ICheckoutRequiredProps) => {
-  const validateString = (item?: string) =>
-    typeof item !== 'string' || !item.trim();
+export const checkRequiredProps = ({ production, demo, preview }: ICheckoutRequiredProps) => {
+  const validateString = (item?: string) => typeof item !== 'string' || !item.trim();
 
   const validateObject = (item?: object | null) =>
     !item || typeof item !== 'object' || !Object.entries(item).length;
@@ -44,10 +39,7 @@ export const checkRequiredProps = ({
     }
 
     if (missingParams?.length) {
-      throw new FrameError(
-        `Missing or Invalid prop: ${missingParams.join(', ')}.`,
-        'developer'
-      );
+      throw new FrameError(`Missing or Invalid prop: ${missingParams.join(', ')}.`, 'developer');
     }
     return;
   }
@@ -66,9 +58,6 @@ export const checkRequiredProps = ({
   }
 
   if (missingParams?.length) {
-    throw new FrameError(
-      `Missing or Invalid prop: ${missingParams.join(', ')}.`,
-      'developer'
-    );
+    throw new FrameError(`Missing or Invalid prop: ${missingParams.join(', ')}.`, 'developer');
   }
 };

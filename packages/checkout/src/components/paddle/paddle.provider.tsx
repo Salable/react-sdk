@@ -1,9 +1,6 @@
 import React, { FC, useEffect, useState } from 'react';
 import usePaddle from './use-paddle';
-import {
-  ICheckoutContext,
-  IPaddleUserData,
-} from '../../interfaces/paddle.interface';
+import { ICheckoutContext, IPaddleUserData } from '../../interfaces/paddle.interface';
 import { FrameError } from '../../util/message-error';
 
 const CheckoutContext = React.createContext<ICheckoutContext>({});
@@ -15,11 +12,8 @@ const PaddleCheckoutProvider: FC<ICheckoutContext> = ({
   children,
   productId,
 }) => {
-  if (!environmentConfig)
-    throw new FrameError('Must provide environmentConfig', 'developer');
-  const [selectedProductId, setSelectedProductId] = useState<string | null>(
-    productId || null
-  );
+  if (!environmentConfig) throw new FrameError('Must provide environmentConfig', 'developer');
+  const [selectedProductId, setSelectedProductId] = useState<string | null>(productId || null);
   const [userData, setUserData] = useState<IPaddleUserData>({ sub: null });
   const [passthrough, setPassthrough] = useState({});
 

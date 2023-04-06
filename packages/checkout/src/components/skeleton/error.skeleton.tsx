@@ -12,12 +12,7 @@ const InputLabelSkeleton = () => {
 
 export const InputSkeleton = () => {
   return (
-    <div
-      className={classNames(
-        styles.skeleton__input_wrapper,
-        styles.skeleton__cursor_error
-      )}
-    >
+    <div className={classNames(styles.skeleton__input_wrapper, styles.skeleton__cursor_error)}>
       <InputLabelSkeleton />
       <div className={styles.skeleton__input}>
         <span className={styles.skeleton__discernable_text}>Error</span>

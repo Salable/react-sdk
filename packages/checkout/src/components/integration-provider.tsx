@@ -65,8 +65,7 @@ const SelectIntegration: FC<IIntegrationProvider> = ({ children }) => {
         checkoutConfig={{
           frameInitialHeight: 416,
           success: params.success_url,
-          frameStyle:
-            'width:100%; min-width:376px; background-color: transparent; border: none;',
+          frameStyle: 'width:100%; min-width:376px; background-color: transparent; border: none;',
         }}
         productId={paddle.planID}
         targetComponent={paddleComponentId}
@@ -81,10 +80,7 @@ const SelectIntegration: FC<IIntegrationProvider> = ({ children }) => {
   return <Fragment>{children}</Fragment>;
 };
 
-export const IntegrationProvider: FC<IIntegrationProvider> = ({
-  children,
-  topComponent,
-}) => {
+export const IntegrationProvider: FC<IIntegrationProvider> = ({ children, topComponent }) => {
   const {
     renderType,
     closeCheckoutModal,

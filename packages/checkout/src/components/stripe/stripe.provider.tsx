@@ -9,39 +9,29 @@ import styles from './stripe-form.module.css';
 import './checkout-form.css';
 import { ErrorMessage, InputEmail } from '../input-email';
 
-const previewClient =
-  'pi_3MYVXrChnZeGQTI01UrTGTbU_secret_Hx3aztX7ULt4xqNF4bZAtrjpy';
+const previewClient = 'pi_3MYVXrChnZeGQTI01UrTGTbU_secret_Hx3aztX7ULt4xqNF4bZAtrjpy';
 
 export interface IStripeProvider {
   planID: string;
   stripePubKey: string;
 }
 
-export const StripeProvider: FC<IStripeProvider> = ({
-  stripePubKey,
-  planID,
-}) => {
+export const StripeProvider: FC<IStripeProvider> = ({ stripePubKey, planID }) => {
   const {
     preview,
     state: { params, styles: customStyles },
   } = useInHouseCheckout();
   const [errorMessage, setErrorMessage] = useState('');
-  const [clientSecret, setClientSecret] = useState(
-    preview ? previewClient : ''
-  );
+  const [clientSecret, setClientSecret] = useState(preview ? previewClient : '');
   const [userEmail, setUserEmail] = useState('');
   const [emailError, setEmailError] = useState('');
   const [creatingIntent, setCreatingIntent] = useState(false);
 
-  const createSubscriptionIntent = (
-    event: React.FormEvent<HTMLFormElement>
-  ) => {
+  const createSubscriptionIntent = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     // if (preview) return;
     if (!SALABLE_API) throw new FrameError('Missing API Domain', 'developer');
-    const emailValid = RegExp(
-      '^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$'
-    ).test(userEmail);
+    const emailValid = RegExp('^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$').test(userEmail);
     // Validate email address
     if (!userEmail || !emailValid) {
       setEmailError(`Invalid email address: ${userEmail}`);
@@ -103,11 +93,7 @@ export const StripeProvider: FC<IStripeProvider> = ({
   }
   return (
     <form onSubmit={createSubscriptionIntent}>
-      <InputEmail
-        className={styles['mb-24']}
-        onChange={onEmailChange}
-        errorMessage={emailError}
-      />
+      <InputEmail className={styles['mb-24']} onChange={onEmailChange} errorMessage={emailError} />
       <button
         disabled={creatingIntent}
         id="submit"
@@ -119,11 +105,7 @@ export const StripeProvider: FC<IStripeProvider> = ({
         }}
       >
         <span id="button-text">
-          {creatingIntent ? (
-            <div className="spinner" id="spinner" />
-          ) : (
-            'Continue'
-          )}
+          {creatingIntent ? <div className="spinner" id="spinner" /> : 'Continue'}
         </span>
       </button>
       <ErrorMessage message={errorMessage} />

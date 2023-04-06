@@ -21,10 +21,7 @@ export interface ICheckoutState {
 export type ICheckoutAction =
   | {
       type: 'INITIALIZE_PREVIEW';
-      payload: Pick<
-        ICheckoutState,
-        'integration_type' | 'paddle' | 'stripe' | 'plan'
-      >;
+      payload: Pick<ICheckoutState, 'integration_type' | 'paddle' | 'stripe' | 'plan'>;
     }
   | { type: 'GET_PLAN' }
   | {
@@ -101,10 +98,7 @@ export const initialCheckoutValues: ICheckoutState = {
 /**
  * Handles how the state changes in the `useCheckout` hook.
  */
-export const reducer = (
-  state: ICheckoutState,
-  action: ICheckoutAction
-): ICheckoutState => {
+export const reducer = (state: ICheckoutState, action: ICheckoutAction): ICheckoutState => {
   switch (action.type) {
     case 'INITIALIZE_PREVIEW': {
       const { payload } = action;
@@ -132,15 +126,8 @@ export const reducer = (
         styles: {
           ...state.styles,
           ...payload,
-          spacingUnit3: transformUnit(
-            state.styles?.spacingUnit || '',
-            payload?.spacingUnit,
-            3
-          ),
-          borderRadius: transformUnit(
-            state.styles?.borderRadius || '',
-            payload?.borderRadius
-          ),
+          spacingUnit3: transformUnit(state.styles?.spacingUnit || '', payload?.spacingUnit, 3),
+          borderRadius: transformUnit(state.styles?.borderRadius || '', payload?.borderRadius),
         },
       };
     }
@@ -157,10 +144,8 @@ export const reducer = (
     }
     case 'GET_PLAN_SUCCESSFUL': {
       const { plan } = action.payload;
-      const integrationType =
-        plan.product.organisationPaymentIntegration.integrationName;
-      const accountData =
-        plan.product.organisationPaymentIntegration.accountData;
+      const integrationType = plan.product.organisationPaymentIntegration.integrationName;
+      const accountData = plan.product.organisationPaymentIntegration.accountData;
       return {
         ...state,
         getting_plan: false,
@@ -171,10 +156,8 @@ export const reducer = (
         stripe:
           integrationType === 'stripe'
             ? {
-                publishableKey: decryptAccount<'stripe'>(
-                  accountData.encryptedData,
-                  accountData.key
-                ).publishableKey,
+                publishableKey: decryptAccount<'stripe'>(accountData.encryptedData, accountData.key)
+                  .publishableKey,
               }
             : null,
         paddle:
@@ -182,10 +165,8 @@ export const reducer = (
             ? {
                 environment: plan.environment === 'dev' ? 'sandbox' : undefined,
                 vendorID: parseInt(
-                  decryptAccount<'paddle'>(
-                    accountData.encryptedData,
-                    accountData.key
-                  ).paddleVendorId
+                  decryptAccount<'paddle'>(accountData.encryptedData, accountData.key)
+                    .paddleVendorId
                 ),
                 planID: plan.paddlePlanId || undefined,
               }
@@ -198,8 +179,7 @@ export const reducer = (
       return {
         ...state,
         getting_plan: false,
-        error_message:
-          action?.payload?.message || 'Failed to get plan required for payment',
+        error_message: action?.payload?.message || 'Failed to get plan required for payment',
       };
     }
     default:

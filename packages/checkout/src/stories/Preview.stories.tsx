@@ -46,8 +46,7 @@ const EmbeddedTemplated: ComponentStory<typeof CheckoutProvider> = (props) => {
           organisation: 'org_Nnz6gerYh3VMhFyJ',
           status: 'ACTIVE',
           paid: true,
-          organisationPaymentIntegrationUuid:
-            'bf16ff05-6c21-4c77-a128-21770fd97648',
+          organisationPaymentIntegrationUuid: 'bf16ff05-6c21-4c77-a128-21770fd97648',
           paymentIntegrationProductId: 'prod_NBqOEJhv99fkBN',
           updatedAt: '2023-01-18T03:52:43.061Z',
           organisationPaymentIntegration: {
@@ -142,8 +141,7 @@ Embedded.args = {
   stripePublishableKey:
     'pk_test_51M4mzkChnZeGQTI0Vn4NxPL6hKlkmX0Why53tXh1PsJn7r57ccmcWtR6Ytbies2ttBy74zwcXMrIDzgx98bCpPeP00LBAMsW60',
   styles: {
-    fontFamily:
-      "'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif",
+    fontFamily: "'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif",
     primaryColor: '#028737',
     backgroundColor: '#525f7f',
     spacingUnit: '4px',

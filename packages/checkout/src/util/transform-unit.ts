@@ -6,11 +6,7 @@
  * @param multiply
  * @returns string
  */
-export const transformUnit = (
-  defaultUnit: string,
-  unit?: string,
-  multiply = 1
-) => {
+export const transformUnit = (defaultUnit: string, unit?: string, multiply = 1) => {
   const splitSpacingUnit = unit
     ? unit.match(/^([+-]?\d*\.?\d+)(.*)$/)
     : defaultUnit?.match(/^([+-]?\d*\.?\d+)(.*)$/);

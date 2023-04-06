@@ -15,10 +15,7 @@ export interface IIntegrationWrapper {
   background?: IBackground;
 }
 
-const getStyleValueString = (
-  key: keyof Omit<IBackground, 'none'>,
-  background?: IBackground
-) => {
+const getStyleValueString = (key: keyof Omit<IBackground, 'none'>, background?: IBackground) => {
   if (!background || background?.none) return undefined;
   return background[key];
 };
@@ -33,13 +30,9 @@ export const IntegrationWrapper: FC<IIntegrationWrapper> = ({
   } = useInHouseCheckout();
   return (
     <div
-      className={classNames(
-        background?.none ? undefined : styles.integrationContainer
-      )}
+      className={classNames(background?.none ? undefined : styles.integrationContainer)}
       style={{
-        backgroundColor: background?.none
-          ? 'none'
-          : customStyles?.backgroundColor,
+        backgroundColor: background?.none ? 'none' : customStyles?.backgroundColor,
         height: getStyleValueString('height', background),
         width: getStyleValueString('width', background),
       }}
@@ -61,13 +54,9 @@ export const IntegrationWrapper: FC<IIntegrationWrapper> = ({
         {integration_type === 'paddle' && preview ? (
           <div className={styles.paddlePreview}>
             <div className={styles.paddlePreview__message}>
-              <h2>
-                You will need to customize your Paddle Checkout from your Paddle
-                Dashboard.
-              </h2>
+              <h2>You will need to customize your Paddle Checkout from your Paddle Dashboard.</h2>
               <p className={styles.paddlePreview__message_sub}>
-                You can find the customization page under <br />{' '}
-                <strong>Checkout</strong> &#8594;{' '}
+                You can find the customization page under <br /> <strong>Checkout</strong> &#8594;{' '}
                 <strong>Checkout settings</strong>.
               </p>
             </div>

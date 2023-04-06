@@ -9,21 +9,12 @@ export interface IModalContainer {
   zIndex?: number;
 }
 
-const ModalContainer: FC<IModalContainer> = ({
-  children,
-  showPayment,
-  onClose,
-}) => {
+const ModalContainer: FC<IModalContainer> = ({ children, showPayment, onClose }) => {
   if (!showPayment) {
     return null;
   }
   return (
-    <div
-      className={styles.modal__container}
-      role="dialog"
-      aria-modal="true"
-      aria-live="assertive"
-    >
+    <div className={styles.modal__container} role="dialog" aria-modal="true" aria-live="assertive">
       <div className={styles.modal__mask} onClick={onClose} />
       <div className={styles.modal__content}>
         <Fragment>{children}</Fragment>
@@ -32,8 +23,7 @@ const ModalContainer: FC<IModalContainer> = ({
   );
 };
 
-let ModalNode =
-  typeof window !== 'undefined' && document.getElementById('helper-portal');
+let ModalNode = typeof window !== 'undefined' && document.getElementById('helper-portal');
 
 if (typeof window !== 'undefined' && !ModalNode) {
   ModalNode = document.createElement('div');

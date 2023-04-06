@@ -1,22 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import {
-  PaymentElement,
-  useStripe,
-  useElements,
-} from '@stripe/react-stripe-js';
+import { PaymentElement, useStripe, useElements } from '@stripe/react-stripe-js';
 import { StripePaymentElementOptions } from '@stripe/stripe-js';
 
 import styles from './stripe-form.module.css';
 import { useInHouseCheckout } from '../../context/use-checkout';
 import { ErrorMessage } from '../input-email';
 
-const CheckoutForm = ({
-  email,
-  clientSecret,
-}: {
-  email: string;
-  clientSecret: string;
-}) => {
+const CheckoutForm = ({ email, clientSecret }: { email: string; clientSecret: string }) => {
   const stripe = useStripe();
   const elements = useElements();
   const {
@@ -104,10 +94,7 @@ const CheckoutForm = ({
 
   return (
     <form id="payment-form" onSubmit={handleSubmit}>
-      <PaymentElement
-        className={styles['mb-24']}
-        options={paymentElementOptions}
-      />
+      <PaymentElement className={styles['mb-24']} options={paymentElementOptions} />
       <button
         disabled={isLoading || !stripe || !elements}
         id="submit"

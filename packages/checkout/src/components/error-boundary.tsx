@@ -43,9 +43,7 @@ export class ErrorBoundary extends React.Component<
       return (
         <IntegrationWrapper>
           <FormFieldError
-            message={
-              this.state.message || 'Something went wrong. Please try again.'
-            }
+            message={this.state.message || 'Something went wrong. Please try again.'}
           />
         </IntegrationWrapper>
       );
