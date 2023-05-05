@@ -1,6 +1,6 @@
 {
   "name": "@salable/pricing-table-react",
-  "version": "1.9.0",
+  "version": "1.10.0",
   "description": "A react component to render your Salable pricing table in your app.",
   "scripts": {
     "storybook": "start-storybook -p 6006",
