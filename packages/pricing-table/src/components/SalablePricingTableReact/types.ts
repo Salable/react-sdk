@@ -25,6 +25,7 @@ export interface IPricingTableReact {
     theme?: string;
     environment?: string;
     state?: string;
+    currency?: string;
   };
   checkoutConfig: {
     member: string;
