@@ -1,3 +1,10 @@
+# [1.11.0](https://github.com/Salable/react-sdk/compare/v1.10.0...v1.11.0) (2023-06-14)
+
+
+### Features
+
+* added currency to envConfig interface ([0d902aa](https://github.com/Salable/react-sdk/commit/0d902aa457c4b8ec95afe4a513901b55ba93c94d))
+
 # [1.10.0](https://github.com/Salable/react-sdk/compare/v1.9.0...v1.10.0) (2023-05-05)
 
 
