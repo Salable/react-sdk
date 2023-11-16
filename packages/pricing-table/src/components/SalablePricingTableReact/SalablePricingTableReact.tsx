@@ -1,12 +1,14 @@
 import { FC, useEffect } from 'react';
 import { IPricingTable, IPricingTableReact } from './types';
-import { JS_SDK_VERSION } from '../../../../constants';
+import { JS_SDK_VERSION } from '@/packages/constants';
 
 export const SalablePricingTableReact: FC<IPricingTableReact> = ({ envConfig, checkoutConfig }) => {
   let pricingTable: IPricingTable = null;
+  let rendered = false;
 
   useEffect(() => {
-    if (!document.getElementById('salableCdnScript')) {
+    if (!document.getElementById('salableCdnScript') && !rendered) {
+      rendered = true;
       const script = document.createElement('script');
 
       script.src = `https://cdn.salable.${
