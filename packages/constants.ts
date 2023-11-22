@@ -1,1 +1,1 @@
-export const JS_SDK_VERSION = '1.13.0';
+export const JS_SDK_VERSION = '1.11.0';
