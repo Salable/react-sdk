@@ -1,3 +1,12 @@
+## [1.12.1](https://github.com/Salable/react-sdk/compare/v1.12.0...v1.12.1) (2023-11-22)
+
+
+### Bug Fixes
+
+* add rendered boolean to prevent rendering twice ([b5c43da](https://github.com/Salable/react-sdk/commit/b5c43da1d0d184324e1be26a78e5d0abd8e765b4))
+* update sdk version ([9b8deeb](https://github.com/Salable/react-sdk/commit/9b8deeb9e0176d1f0e7b6539c6b1d7462adbef74))
+* update sdk version ([4c0f605](https://github.com/Salable/react-sdk/commit/4c0f605cc0d56d41a8d1471a97bf16c808609fea))
+
 # [1.12.0](https://github.com/Salable/react-sdk/compare/v1.11.0...v1.12.0) (2023-06-14)
 
 
