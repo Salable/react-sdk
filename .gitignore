@@ -5,6 +5,7 @@ coverage
 dist
 cdk.out
 .env
+.npmrc
 
 !jest.config.js
 
