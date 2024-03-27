@@ -25,7 +25,9 @@ export const SalablePricingTableReact: FC<IPricingTableReact> = ({ envConfig, ch
         if (window.SalablePricingTable) {
           (async () => {
             pricingTable = new window.SalablePricingTable(envConfig, checkoutConfig);
-            await pricingTable?.init();
+            document.querySelector('.salable-pricing-table-container')
+              ? null
+              : await pricingTable?.init();
           })().catch((error) => {
             // eslint-disable-next-line no-console
             console.error(error);
