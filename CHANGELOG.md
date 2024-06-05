@@ -1,3 +1,12 @@
+## [1.12.2](https://github.com/Salable/react-sdk/compare/v1.12.1...v1.12.2) (2024-06-05)
+
+
+### Bug Fixes
+
+* **flow-288:** fix for double pricing table rendering ([982ce69](https://github.com/Salable/react-sdk/commit/982ce693bd0e0506d7f637327448ef9c8a2ad270))
+* **flow-288:** moving if statement ([0bf6c1c](https://github.com/Salable/react-sdk/commit/0bf6c1c9303e35885e2e9079c50b68b3adbdcb5d))
+* **flow-288:** updating feedback ([2268216](https://github.com/Salable/react-sdk/commit/22682163221e3065451591e60a1ee2a5075af98f))
+
 ## [1.12.1](https://github.com/Salable/react-sdk/compare/v1.12.0...v1.12.1) (2023-11-22)
 
 
