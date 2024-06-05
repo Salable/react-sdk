@@ -24,9 +24,9 @@ export const SalablePricingTableReact: FC<IPricingTableReact> = ({ envConfig, ch
       script.addEventListener('load', () => {
         if (window.SalablePricingTable) {
           (async () => {
-            pricingTable = new window.SalablePricingTable(envConfig, checkoutConfig);
-
             if (document.querySelector('.salable-pricing-table-container')) {
+              pricingTable = new window.SalablePricingTable(envConfig, checkoutConfig);
+
               await pricingTable?.init();
             }
           })().catch((error) => {
