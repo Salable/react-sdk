@@ -1,3 +1,10 @@
+## [1.12.3](https://github.com/Salable/react-sdk/compare/v1.12.2...v1.12.3) (2024-07-03)
+
+
+### Bug Fixes
+
+* removed condition preventing rendering ([65c11fd](https://github.com/Salable/react-sdk/commit/65c11fd5f3b12afea766fd0e347173123585dbf5))
+
 ## [1.12.2](https://github.com/Salable/react-sdk/compare/v1.12.1...v1.12.2) (2024-06-05)
 
 
