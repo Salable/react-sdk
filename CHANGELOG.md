@@ -1,17 +1,9 @@
-# [1.13.0](https://github.com/Salable/react-sdk/compare/v1.12.4...v1.13.0) (2024-09-04)
-
-
-### Features
-
-* bumped core library version to 2.0.0 ([72f8558](https://github.com/Salable/react-sdk/commit/72f855845d843fad8858bc08afe488f9144d5d2e))
-
 ## [1.12.4](https://github.com/Salable/react-sdk/compare/v1.12.3...v1.12.4) (2024-07-03)
-
 
 ### Bug Fixes
 
-* added if condition to stop re-rendering ([bc4e66a](https://github.com/Salable/react-sdk/commit/bc4e66aca4e713be5b0317129018f11f15c91622))
-* removed useeffect dependency to render only once ([168d803](https://github.com/Salable/react-sdk/commit/168d8035d53b63deebb97a86105923435e102a2f))
+- added if condition to stop re-rendering ([bc4e66a](https://github.com/Salable/react-sdk/commit/bc4e66aca4e713be5b0317129018f11f15c91622))
+- removed useeffect dependency to render only once ([168d803](https://github.com/Salable/react-sdk/commit/168d8035d53b63deebb97a86105923435e102a2f))
 
 ## [1.12.3](https://github.com/Salable/react-sdk/compare/v1.12.2...v1.12.3) (2024-07-03)
 
