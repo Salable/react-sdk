@@ -1,3 +1,16 @@
+# [2.0.0](https://github.com/Salable/react-sdk/compare/v1.12.4...v2.0.0) (2024-09-04)
+
+
+### Features
+
+* 2.0.0 release ([a0b3422](https://github.com/Salable/react-sdk/commit/a0b342251fe97433de9b6a10a0098278856afbbe))
+* bumped core library version to 2.0.0 ([72f8558](https://github.com/Salable/react-sdk/commit/72f855845d843fad8858bc08afe488f9144d5d2e))
+
+
+### BREAKING CHANGES
+
+* core js-sdk package moved to 2.0.0.
+
 ## [1.12.4](https://github.com/Salable/react-sdk/compare/v1.12.3...v1.12.4) (2024-07-03)
 
 ### Bug Fixes
