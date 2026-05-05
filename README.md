@@ -1,3 +1,6 @@
+> [!CAUTION]
+> This SDK was made for Legacy Salable and isn't compatible with the latest version of the software.
+
 # @salable/react-sdk
 
 ## Packages Included
